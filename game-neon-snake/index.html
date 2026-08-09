@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Snake — 네온 스네이크</title>
+<style>
+  :root{
+    --bg:#0a0a12; --panel:#12121f; --text:#eef0ff; --muted:#7a7d99;
+    --grid:#1a1b2c; --snake:#39ff9d; --snake-head:#8bffce; --food:#ff4d8d; --border:#22243a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif;
+    display:flex; flex-direction:column; align-items:center; padding: 24px 14px 40px;
+  }
+  .title{ font-size:22px; font-weight:800; letter-spacing:-0.01em; text-shadow: 0 0 18px rgba(57,255,157,0.5); }
+  .subtitle{ color:var(--muted); font-size:13px; margin: 4px 0 18px; }
+  .hud{
+    display:flex; gap:20px; align-items:center; margin-bottom:14px;
+    background:var(--panel); border:1px solid var(--border); padding:10px 20px; border-radius:14px;
+  }
+  .hud .stat{ text-align:center; }
+  .hud .label{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+  .hud .num{ font-size:20px; font-weight:800; font-variant-numeric: tabular-nums; }
+  .hud .num.score{ color: var(--snake); }
+  .hud .num.best{ color: var(--food); }
+  .board-wrap{
+    position:relative; border-radius:16px; overflow:hidden;
+    box-shadow: 0 0 0 1px var(--border), 0 20px 60px rgba(0,0,0,0.5), 0 0 60px rgba(57,255,157,0.06);
+  }
+  canvas{ display:block; background: var(--grid); }
+  .overlay{
+    position:absolute; inset:0; background: rgba(6,6,12,0.82);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+    text-align:center; padding: 20px;
+  }
+  .overlay h2{ margin:0; font-size:24px; }
+  .overlay p{ margin:0; color:var(--muted); font-size:13px; max-width:280px; }
+  .btn{
+    padding:12px 26px; border-radius:12px; border:none; background:var(--snake); color:#052213;
+    font-weight:800; font-size:14px; cursor:pointer; font-family:inherit;
+  }
+  .btn:active{ transform: scale(0.96); }
+  .controls-hint{ margin-top:16px; color:var(--muted); font-size:12px; text-align:center; line-height:1.6; }
+  .touch-pad{ display:none; margin-top:18px; }
+  @media (max-width: 560px){
+    .touch-pad{ display:grid; grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(3, 56px); gap:6px; }
+  }
+  .tp-btn{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px; color:var(--text);
+    font-size:20px; display:flex; align-items:center; justify-content:center; user-select:none;
+  }
+  .tp-up{grid-column:2; grid-row:1;} .tp-left{grid-column:1; grid-row:2;}
+  .tp-right{grid-column:3; grid-row:2;} .tp-down{grid-column:2; grid-row:3;}
+</style>
+</head>
+<body>
+  <div class="title">🐍 Neon Snake</div>
+  <div class="subtitle">방향키 또는 스와이프로 조작하세요</div>
+
+  <div class="hud">
+    <div class="stat"><div class="label">Score</div><div class="num score" id="score">0</div></div>
+    <div class="stat"><div class="label">Best</div><div class="num best" id="best">0</div></div>
+    <div class="stat"><div class="label">Speed</div><div class="num" id="speedLvl">1</div></div>
+  </div>
+
+  <div class="board-wrap">
+    <canvas id="board" width="480" height="480"></canvas>
+    <div class="overlay" id="overlay">
+      <h2 id="overlayTitle">시작할 준비 되셨나요?</h2>
+      <p id="overlayText">스페이스바 또는 아래 버튼으로 시작하세요. 벽에 부딪히거나 자기 몸에 닿으면 게임 오버!</p>
+      <button class="btn" id="startBtn">게임 시작</button>
+    </div>
+  </div>
+
+  <div class="controls-hint">↑ ↓ ← → 또는 W A S D 로 이동 · 스페이스바로 일시정지</div>
+
+  <div class="touch-pad">
+    <div class="tp-btn tp-up" data-dir="up">↑</div>
+    <div class="tp-btn tp-left" data-dir="left">←</div>
+    <div class="tp-btn tp-right" data-dir="right">→</div>
+    <div class="tp-btn tp-down" data-dir="down">↓</div>
+  </div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('board');
+  const ctx = canvas.getContext('2d');
+  const GRID = 24;
+  const CELL = canvas.width / GRID;
+
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+  const speedLvlEl = document.getElementById('speedLvl');
+  const overlay = document.getElementById('overlay');
+  const overlayTitle = document.getElementById('overlayTitle');
+  const overlayText = document.getElementById('overlayText');
+  const startBtn = document.getElementById('startBtn');
+
+  const BEST_KEY = 'neonsnake.best.v1';
+  let best = +localStorage.getItem(BEST_KEY) || 0;
+  bestEl.textContent = best;
+
+  let snake, dir, nextDir, food, score, speedLvl, tickMs, timer, running, paused;
+
+  function reset(){
+    snake = [{x:12,y:12},{x:11,y:12},{x:10,y:12}];
+    dir = 'right';
+    nextDir = 'right';
+    score = 0;
+    speedLvl = 1;
+    tickMs = 130;
+    placeFood();
+    scoreEl.textContent = 0;
+    speedLvlEl.textContent = 1;
+  }
+
+  function placeFood(){
+    let ok = false;
+    while(!ok){
+      food = { x: Math.floor(Math.random()*GRID), y: Math.floor(Math.random()*GRID) };
+      ok = !snake.some(s => s.x===food.x && s.y===food.y);
+    }
+  }
+
+  function draw(){
+    ctx.fillStyle = '#12121f';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    for(let i=0;i<=GRID;i++){
+      ctx.beginPath(); ctx.moveTo(i*CELL,0); ctx.lineTo(i*CELL,canvas.height); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,i*CELL); ctx.lineTo(canvas.width,i*CELL); ctx.stroke();
+    }
+
+    // food
+    ctx.save();
+    ctx.shadowColor = '#ff4d8d';
+    ctx.shadowBlur = 16;
+    ctx.fillStyle = '#ff4d8d';
+    const fx = food.x*CELL + CELL/2, fy = food.y*CELL + CELL/2;
+    ctx.beginPath();
+    ctx.arc(fx, fy, CELL*0.34, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+
+    // snake
+    snake.forEach((s,i) => {
+      ctx.save();
+      const isHead = i === 0;
+      ctx.shadowColor = isHead ? '#8bffce' : '#39ff9d';
+      ctx.shadowBlur = isHead ? 14 : 6;
+      ctx.fillStyle = isHead ? '#8bffce' : '#39ff9d';
+      const pad = isHead ? 1 : 2;
+      roundRect(ctx, s.x*CELL+pad, s.y*CELL+pad, CELL-pad*2, CELL-pad*2, 5);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+
+  const OPPOSITE = { up:'down', down:'up', left:'right', right:'left' };
+
+  function setDir(d){
+    if(!running || paused) return;
+    if(OPPOSITE[d] === dir) return;
+    nextDir = d;
+  }
+
+  function tick(){
+    dir = nextDir;
+    const head = { ...snake[0] };
+    if(dir==='up') head.y--;
+    if(dir==='down') head.y++;
+    if(dir==='left') head.x--;
+    if(dir==='right') head.x++;
+
+    const hitWall = head.x<0 || head.x>=GRID || head.y<0 || head.y>=GRID;
+    const hitSelf = snake.some(s => s.x===head.x && s.y===head.y);
+
+    if(hitWall || hitSelf){
+      gameOver();
+      return;
+    }
+
+    snake.unshift(head);
+
+    if(head.x === food.x && head.y === food.y){
+      score += 10;
+      scoreEl.textContent = score;
+      placeFood();
+      if(score % 50 === 0 && tickMs > 55){
+        tickMs -= 10;
+        speedLvl++;
+        speedLvlEl.textContent = speedLvl;
+        restartTimer();
+      }
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  function restartTimer(){
+    clearInterval(timer);
+    timer = setInterval(tick, tickMs);
+  }
+
+  function gameOver(){
+    running = false;
+    clearInterval(timer);
+    if(score > best){
+      best = score;
+      localStorage.setItem(BEST_KEY, best);
+      bestEl.textContent = best;
+      overlayTitle.textContent = '🎉 신기록!';
+      overlayText.textContent = `점수 ${score}점으로 최고 기록을 세웠어요!`;
+    } else {
+      overlayTitle.textContent = '게임 오버';
+      overlayText.textContent = `점수: ${score}점 · 최고 기록: ${best}점`;
+    }
+    startBtn.textContent = '다시 시작';
+    overlay.style.display = 'flex';
+  }
+
+  function startGame(){
+    reset();
+    running = true;
+    paused = false;
+    overlay.style.display = 'none';
+    draw();
+    restartTimer();
+  }
+
+  function togglePause(){
+    if(!running) return;
+    paused = !paused;
+    if(paused){
+      clearInterval(timer);
+      overlayTitle.textContent = '일시정지';
+      overlayText.textContent = '스페이스바를 눌러 계속하세요';
+      overlay.style.display = 'flex';
+    } else {
+      overlay.style.display = 'none';
+      restartTimer();
+    }
+  }
+
+  startBtn.addEventListener('click', startGame);
+
+  window.addEventListener('keydown', e => {
+    const map = {
+      ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right',
+      w:'up', s:'down', a:'left', d:'right', W:'up', S:'down', A:'left', D:'right'
+    };
+    if(map[e.key]){ e.preventDefault(); setDir(map[e.key]); }
+    if(e.key === ' '){
+      e.preventDefault();
+      if(!running){ startGame(); } else { togglePause(); }
+    }
+  });
+
+  document.querySelectorAll('.tp-btn').forEach(btn => {
+    btn.addEventListener('click', () => setDir(btn.dataset.dir));
+  });
+
+  // swipe support
+  let touchStart = null;
+  canvas.addEventListener('touchstart', e => {
+    touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }, {passive:true});
+  canvas.addEventListener('touchend', e => {
+    if(!touchStart) return;
+    const dx = e.changedTouches[0].clientX - touchStart.x;
+    const dy = e.changedTouches[0].clientY - touchStart.y;
+    if(Math.abs(dx) > Math.abs(dy)){
+      setDir(dx > 0 ? 'right' : 'left');
+    } else {
+      setDir(dy > 0 ? 'down' : 'up');
+    }
+    touchStart = null;
+  }, {passive:true});
+
+  reset();
+  draw();
+})();
+</script>
+</body>
+</html>

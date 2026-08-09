@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus Ring — 뽀모도로 & 할일</title>
+<style>
+  :root{
+    --bg: #f4f3f1;
+    --card: #ffffff;
+    --text: #1c1b1a;
+    --muted: #6b6863;
+    --accent: #e2572b;
+    --accent-soft: #fbe4dc;
+    --accent2: #2b8a6f;
+    --ring-track: #e7e4df;
+    --border: #e7e4df;
+    --shadow: 0 1px 2px rgba(28,27,26,0.04), 0 8px 24px rgba(28,27,26,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #16151a;
+      --card: #201f26;
+      --text: #f2f0ec;
+      --muted: #9b978f;
+      --accent: #ff6a3d;
+      --accent-soft: #3a241d;
+      --accent2: #3fbf9a;
+      --ring-track: #2c2a31;
+      --border: #2c2a31;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+    }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding: 40px 16px;
+  }
+  .app{
+    width:100%;
+    max-width: 920px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 720px){
+    .app{ grid-template-columns: 1fr; }
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:28px;
+    box-shadow: var(--shadow);
+  }
+  h1{
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .sub{
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 24px;
+  }
+  .timer-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .ring-box{ position:relative; width: 240px; height:240px; margin: 8px auto 20px; }
+  svg{ transform: rotate(-90deg); }
+  .ring-track{ fill:none; stroke:var(--ring-track); stroke-width:12; }
+  .ring-progress{ fill:none; stroke:var(--accent); stroke-width:12; stroke-linecap:round; transition: stroke-dashoffset 0.3s linear, stroke 0.3s; }
+  .ring-center{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .time{ font-size: 44px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing:-0.02em; }
+  .mode-label{ font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:4px; font-weight:600; }
+  .modes{ display:flex; gap:8px; margin-bottom: 20px; }
+  .mode-btn{
+    flex:1;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight:600;
+    cursor:pointer;
+    transition: all .15s;
+  }
+  .mode-btn.active{ background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+  .controls{ display:flex; gap:10px; width:100%; }
+  button{ font-family:inherit; }
+  .btn{
+    flex:1;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .1s, opacity .15s;
+  }
+  .btn:active{ transform: scale(0.97); }
+  .btn-primary{ background: var(--accent); color: white; }
+  .btn-ghost{ background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .sessions{ margin-top:18px; font-size:12px; color:var(--muted); text-align:center; }
+  .dots{ display:flex; gap:6px; justify-content:center; margin-top:8px; }
+  .dot{ width:8px; height:8px; border-radius:50%; background: var(--ring-track); }
+  .dot.done{ background: var(--accent2); }
+
+  /* Todo */
+  .todo-header{ display:flex; align-items:baseline; justify-content:space-between; }
+  .add-row{ display:flex; gap:8px; margin: 16px 0 18px; }
+  .add-row input{
+    flex:1;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+  }
+  .add-row input:focus{ outline: 2px solid var(--accent); outline-offset: -1px; }
+  .add-row button{
+    width:44px;
+    border-radius:12px;
+    border:none;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 20px;
+    cursor:pointer;
+  }
+  ul.list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; max-height:360px; overflow-y:auto; }
+  .item{
+    display:flex; align-items:center; gap:10px;
+    padding: 11px 10px;
+    border-radius: 10px;
+    transition: background .12s;
+  }
+  .item:hover{ background: var(--bg); }
+  .check{
+    width:20px; height:20px; border-radius:6px; border:2px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; flex-shrink:0; color:white; font-size:13px;
+  }
+  .check.checked{ background: var(--accent2); border-color: var(--accent2); }
+  .item-text{ flex:1; font-size:14px; word-break:break-word; }
+  .item.done .item-text{ text-decoration: line-through; color: var(--muted); }
+  .del{ opacity:0; cursor:pointer; color: var(--muted); background:none; border:none; font-size:16px; padding:4px; }
+  .item:hover .del{ opacity:1; }
+  .empty{ text-align:center; color: var(--muted); font-size:13px; padding: 30px 0; }
+  .footer-note{ text-align:center; color:var(--muted); font-size:12px; margin-top: 28px; }
+</style>
+</head>
+<body>
+<div style="width:100%;max-width:920px;">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="font-size:22px;font-weight:800;letter-spacing:-0.01em;">🎯 Focus Ring</div>
+    <div style="color:var(--muted);font-size:13px;margin-top:4px;">뽀모도로 타이머 + 할일 목록</div>
+  </div>
+
+  <div class="app">
+    <div class="card timer-wrap">
+      <h1 style="align-self:flex-start;">타이머</h1>
+      <p class="sub" style="align-self:flex-start;">집중 시간을 정하고 시작하세요</p>
+
+      <div class="modes">
+        <button class="mode-btn active" data-mode="work" data-min="25">집중 25</button>
+        <button class="mode-btn" data-mode="short" data-min="5">짧은휴식 5</button>
+        <button class="mode-btn" data-mode="long" data-min="15">긴휴식 15</button>
+      </div>
+
+      <div class="ring-box">
+        <svg width="240" height="240" viewBox="0 0 240 240">
+          <circle class="ring-track" cx="120" cy="120" r="104"></circle>
+          <circle class="ring-progress" id="ringProgress" cx="120" cy="120" r="104"
+                  stroke-dasharray="653.45" stroke-dashoffset="0"></circle>
+        </svg>
+        <div class="ring-center">
+          <div class="time" id="timeLabel">25:00</div>
+          <div class="mode-label" id="modeLabel">WORK</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-primary" id="startBtn">시작</button>
+        <button class="btn btn-ghost" id="resetBtn">리셋</button>
+      </div>
+
+      <div class="sessions">
+        오늘 완료한 뽀모도로: <span id="sessionCount">0</span>개
+        <div class="dots" id="dots"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="todo-header">
+        <h1>할일</h1>
+        <span class="sub" id="progressText" style="margin:0;"></span>
+      </div>
+      <div class="add-row">
+        <input id="todoInput" type="text" placeholder="할일을 입력하고 Enter…" maxlength="120">
+        <button id="addBtn">+</button>
+      </div>
+      <ul class="list" id="list"></ul>
+    </div>
+  </div>
+
+  <div class="footer-note">데이터는 이 브라우저(localStorage)에만 저장됩니다.</div>
+</div>
+
+<audio id="dingSound" preload="auto">
+  <source src="data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAgD4AAIA+AAABAAgAZGF0YQAAAAA=" type="audio/wav">
+</audio>
+
+<script>
+(function(){
+  // ---------- Todo ----------
+  const LIST_KEY = 'focusring.todos.v1';
+  const listEl = document.getElementById('list');
+  const input = document.getElementById('todoInput');
+  const addBtn = document.getElementById('addBtn');
+  const progressText = document.getElementById('progressText');
+
+  let todos = JSON.parse(localStorage.getItem(LIST_KEY) || '[]');
+
+  function saveTodos(){ localStorage.setItem(LIST_KEY, JSON.stringify(todos)); }
+
+  function renderTodos(){
+    listEl.innerHTML = '';
+    if(todos.length === 0){
+      listEl.innerHTML = '<div class="empty">할일이 없어요. 하나 추가해보세요 ✨</div>';
+    }
+    todos.forEach((t, i) => {
+      const li = document.createElement('li');
+      li.className = 'item' + (t.done ? ' done' : '');
+      li.innerHTML = `
+        <div class="check ${t.done ? 'checked' : ''}" data-i="${i}">${t.done ? '✓' : ''}</div>
+        <div class="item-text">${escapeHtml(t.text)}</div>
+        <button class="del" data-del="${i}">✕</button>
+      `;
+      listEl.appendChild(li);
+    });
+    const done = todos.filter(t => t.done).length;
+    progressText.textContent = todos.length ? `${done}/${todos.length} 완료` : '';
+    saveTodos();
+  }
+
+  function escapeHtml(s){
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function addTodo(){
+    const v = input.value.trim();
+    if(!v) return;
+    todos.unshift({ text: v, done: false });
+    input.value = '';
+    renderTodos();
+  }
+
+  addBtn.addEventListener('click', addTodo);
+  input.addEventListener('keydown', e => { if(e.key === 'Enter') addTodo(); });
+
+  listEl.addEventListener('click', e => {
+    const chk = e.target.closest('.check');
+    const del = e.target.closest('[data-del]');
+    if(chk){
+      const i = +chk.dataset.i;
+      todos[i].done = !todos[i].done;
+      renderTodos();
+    } else if(del){
+      const i = +del.dataset.del;
+      todos.splice(i, 1);
+      renderTodos();
+    }
+  });
+
+  renderTodos();
+
+  // ---------- Timer ----------
+  const DURATIONS = { work: 25, short: 5, long: 15 };
+  let mode = 'work';
+  let totalSeconds = DURATIONS.work * 60;
+  let remaining = totalSeconds;
+  let running = false;
+  let intervalId = null;
+
+  const timeLabel = document.getElementById('timeLabel');
+  const modeLabel = document.getElementById('modeLabel');
+  const startBtn = document.getElementById('startBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const ringProgress = document.getElementById('ringProgress');
+  const CIRC = 2 * Math.PI * 104;
+  const modeButtons = document.querySelectorAll('.mode-btn');
+  const sessionCountEl = document.getElementById('sessionCount');
+  const dotsEl = document.getElementById('dots');
+
+  const SESSION_KEY = 'focusring.sessions.v1';
+  let sessionsToday = loadSessions();
+
+  function todayKey(){
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+  }
+  function loadSessions(){
+    const raw = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+    return raw[todayKey()] || 0;
+  }
+  function saveSessions(){
+    const raw = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+    raw[todayKey()] = sessionsToday;
+    localStorage.setItem(SESSION_KEY, JSON.stringify(raw));
+  }
+  function renderSessions(){
+    sessionCountEl.textContent = sessionsToday;
+    dotsEl.innerHTML = '';
+    const shown = Math.max(4, Math.min(sessionsToday, 8) || 4);
+    for(let i=0;i<shown;i++){
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < sessionsToday ? ' done' : '');
+      dotsEl.appendChild(d);
+    }
+  }
+  renderSessions();
+
+  function formatTime(s){
+    const m = Math.floor(s/60).toString().padStart(2,'0');
+    const sec = Math.floor(s%60).toString().padStart(2,'0');
+    return `${m}:${sec}`;
+  }
+
+  function updateRing(){
+    const pct = remaining / totalSeconds;
+    ringProgress.style.strokeDashoffset = CIRC * (1 - pct);
+    ringProgress.style.stroke = mode === 'work' ? 'var(--accent)' : 'var(--accent2)';
+  }
+
+  ringProgress.setAttribute('stroke-dasharray', CIRC);
+
+  function render(){
+    timeLabel.textContent = formatTime(remaining);
+    modeLabel.textContent = mode === 'work' ? 'WORK' : (mode === 'short' ? 'SHORT BREAK' : 'LONG BREAK');
+    document.title = `${formatTime(remaining)} — Focus Ring`;
+    updateRing();
+  }
+
+  function switchMode(m, resetRunning){
+    mode = m;
+    totalSeconds = DURATIONS[m] * 60;
+    remaining = totalSeconds;
+    modeButtons.forEach(b => b.classList.toggle('active', b.dataset.mode === m));
+    if(resetRunning !== false){ pause(); }
+    render();
+  }
+
+  modeButtons.forEach(b => b.addEventListener('click', () => switchMode(b.dataset.mode)));
+
+  function tick(){
+    remaining--;
+    if(remaining <= 0){
+      pause();
+      playDing();
+      if(mode === 'work'){
+        sessionsToday++;
+        saveSessions();
+        renderSessions();
+        switchMode(sessionsToday % 4 === 0 ? 'long' : 'short', false);
+      } else {
+        switchMode('work', false);
+      }
+      render();
+      return;
+    }
+    render();
+  }
+
+  function start(){
+    if(running) return;
+    running = true;
+    startBtn.textContent = '일시정지';
+    intervalId = setInterval(tick, 1000);
+  }
+  function pause(){
+    running = false;
+    startBtn.textContent = '시작';
+    clearInterval(intervalId);
+  }
+  function playDing(){
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(0.15, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(); o.stop(ctx.currentTime + 0.8);
+    }catch(e){}
+  }
+
+  startBtn.addEventListener('click', () => running ? pause() : start());
+  resetBtn.addEventListener('click', () => { pause(); remaining = totalSeconds; render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>

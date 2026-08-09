@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(git --version)",
+      "PowerShell($ghCmd = Get-Command gh -ErrorAction SilentlyContinue; if \\($ghCmd\\) { Write-Output \"gh found: $\\($ghCmd.Source\\)\" } else { Write-Output \"gh NOT found\" })",
+      "PowerShell($ghCmd = Get-Command gh -ErrorAction SilentlyContinue; if \\($ghCmd\\) { Write-Output \"gh found: $\\($ghCmd.Source\\)\"; & gh --version } else { Write-Output \"gh NOT found yet\" })",
+      "WebFetch(domain:www.k-stat.go.kr)",
+      "Bash(python3 -c ' *)",
+      "PowerShell(python --version)",
+      "PowerShell(py --version)",
+      "Bash(mkdir -p /tmp/xlsx1 /tmp/xlsx2)",
+      "Bash(unzip -o -q \"지출목적별_소비자물가지수_품목포함__2020100__20260809201002.xlsx\" -d /tmp/xlsx1)",
+      "Bash(unzip -o -q \"품목성질별_소비자물가지수_2020100__20260809201125.xlsx\" -d /tmp/xlsx2)",
+      "Read(//tmp/xlsx1/**)",
+      "Read(//tmp/xlsx2/**)",
+      "Bash(python3 -)",
+      "Bash(mkdir -p /c/Users/정우성/AppData/Local/Temp/claude/C--Users-----OneDrive----DB-for-Claude/93df66d7-86a5-43d0-beef-5caaac658510/scratchpad/xlsx1 /c/Users/정우성/AppData/Local/Temp/claude/C--Users-----OneDrive----DB-for-Claude/93df66d7-86a5-43d0-beef-5caaac658510/scratchpad/xlsx2)",
+      "Bash(unzip -o -q 지출목적별_소비자물가지수_품목포함__2020100__20260809201002.xlsx -d /c/Users/정우성/AppData/Local/Temp/claude/C--Users-----OneDrive----DB-for-Claude/93df66d7-86a5-43d0-beef-5caaac658510/scratchpad/xlsx1)",
+      "Bash(unzip -o -q 품목성질별_소비자물가지수_2020100__20260809201125.xlsx -d /c/Users/정우성/AppData/Local/Temp/claude/C--Users-----OneDrive----DB-for-Claude/93df66d7-86a5-43d0-beef-5caaac658510/scratchpad/xlsx2)",
+      "Read(//c/Users/정우성/AppData/Local/Temp/claude/C--Users-----OneDrive----DB-for-Claude/93df66d7-86a5-43d0-beef-5caaac658510/scratchpad/xlsx1/**)",
+      "PowerShell(Get-Command python,python3,py -ErrorAction SilentlyContinue)",
+      "PowerShell(& python --version 2>&1)"
+    ]
+  }
+}
