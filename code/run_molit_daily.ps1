@@ -19,6 +19,9 @@ python collect_molit_raw_recent.py --months 14 --types A,B,C --max-requests 45 2
 python collect_molit_rental.py --start 2011-01 --end 2026-07 --types A,B,C --max-requests 45 2>&1 |
     Tee-Object -FilePath $logFile -Append
 
+# 원자료가 쌓이는 대로 매일 검증 결과를 갱신해둔다 (아직 부족하면 그냥 실패하고 넘어감)
+python analyze_rental_11to10.py 2>&1 | Tee-Object -FilePath $logFile -Append
+
 # 전 구간(561건)이 모두 채워졌으면 더 이상 돌 필요 없으니 스케줄 작업을 스스로 비활성화한다.
 $csvPath = "C:\Users\정우성\OneDrive\문서\DB for Claude\code\processed\molit_rental_monthly.csv"
 if (Test-Path $csvPath) {
