@@ -11,7 +11,12 @@ $logFile = "C:\Users\정우성\OneDrive\문서\DB for Claude\code\processed\moli
 $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 Add-Content -Path $logFile -Value "`n=== $timestamp ===" -Encoding UTF8
 
-python collect_molit_rental.py --start 2011-01 --end 2026-07 --types A,B,C --max-requests 95 2>&1 |
+# 1순위: 최근 1년치 원자료(11~10일 재집계용, 계약일자 보존) 확보 - 한번 다 받으면 더는 요청 안 함
+python collect_molit_raw_recent.py --months 14 --types A,B,C --max-requests 45 2>&1 |
+    Tee-Object -FilePath $logFile -Append
+
+# 2순위: 남은 한도로 2011년부터의 옛날 달 백필 이어가기
+python collect_molit_rental.py --start 2011-01 --end 2026-07 --types A,B,C --max-requests 45 2>&1 |
     Tee-Object -FilePath $logFile -Append
 
 # 전 구간(561건)이 모두 채워졌으면 더 이상 돌 필요 없으니 스케줄 작업을 스스로 비활성화한다.
