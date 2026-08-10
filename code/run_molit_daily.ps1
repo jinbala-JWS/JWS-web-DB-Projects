@@ -1,0 +1,28 @@
+﻿# 매일 국토교통부 실거래가 전월세 데이터를 하루치 한도만큼 이어받는 스케줄 작업용 래퍼.
+# Windows 작업 스케줄러("MOLIT_Rental_Collector")가 매일 이 스크립트를 실행한다.
+
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+$env:PYTHONIOENCODING = "utf-8"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+Set-Location "C:\Users\정우성\OneDrive\문서\DB for Claude\code"
+
+$logFile = "C:\Users\정우성\OneDrive\문서\DB for Claude\code\processed\molit_collect_log.txt"
+$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+Add-Content -Path $logFile -Value "`n=== $timestamp ===" -Encoding UTF8
+
+python collect_molit_rental.py --start 2011-01 --end 2026-07 --types A,B,C --max-requests 95 2>&1 |
+    Tee-Object -FilePath $logFile -Append
+
+# 전 구간(561건)이 모두 채워졌으면 더 이상 돌 필요 없으니 스케줄 작업을 스스로 비활성화한다.
+$csvPath = "C:\Users\정우성\OneDrive\문서\DB for Claude\code\processed\molit_rental_monthly.csv"
+if (Test-Path $csvPath) {
+    $rowCount = (Import-Csv $csvPath).Count
+    if ($rowCount -ge 561) {
+        Add-Content -Path $logFile -Value "561건 모두 수집 완료 - 스케줄 작업 비활성화" -Encoding UTF8
+        schtasks /change /tn "MOLIT_Rental_Collector" /disable | Out-Null
+    }
+}
+
+
+
