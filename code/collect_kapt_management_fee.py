@@ -36,9 +36,16 @@ SEARCH_URL = f"{BASE_URL}/apiinfo/apiStatisticsSearchAvg.do"
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
-# 관심있는 상위 분류 항목 (columnNm1 기준)
+# 관심있는 분류 항목 (columnNm1 기준). 공용관리비(PUBLIC_TOT)는 일반관리비/청소비/경비비/
+# 소독비/승강기유지비/지능형홈네트워크설비유지비/장기수선충당금 등 여러 항목의 합이라
+# CPI의 좁은 의미 "관리비"와는 성격이 다를 수 있어, 그 중 인건비 위주의 "일반관리비"
+# (GENERAL_TOT)만 따로 떼서 비교해본다.
 FIELDS_OF_INTEREST = {
     "PUBLIC_TOT": "공용관리비",
+    "GENERAL_TOT": "일반관리비",
+    "PAYROLL_TOT": "인건비",
+    "CLEAN_COST": "청소비",
+    "GUARD_COST": "경비비",
     "PRIVATE_TOT": "개별사용료",
     "S_LEVY": "장기수선충당금_월부과액",
     "COST_TOT": "관리비총액",
