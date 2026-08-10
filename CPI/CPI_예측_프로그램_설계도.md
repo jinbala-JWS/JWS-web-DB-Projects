@@ -116,6 +116,26 @@
 - [x] 데이터 파이프라인 코드 작성 (`code/data_pipeline.py`)
 - [x] Tier별 예측 모델 구현 (`code/models.py`) — 첫 실행 결과: 2026-08 총지수 예측치 120.79 (전월비 +0.85%), 방법론 검증 오차 +0.6%
 - [x] 라스파이레스 재구성 로직 구현 (`code/run_forecast.py`)
+- [x] 국토교통부 실거래가(전월세) 수집기 + 매일 자동수집 스케줄 (`MOLIT_Rental_Collector`, 100건/일 제한으로 드립수집 중)
+- [x] K-apt 공동주택관리비 수집기 + CPI 검증 (레벨상관 0.96, MoM상관 약함 → 계절패턴+장기추세 블렌드로 반영)
+- [x] **CPI 원자료를 KOSIS Open API로 전환** — 기존 수동 xls 대신 공식 API(`statisticsParameterData.do`, 지출목적별 소비자물가지수 DT_1J22001)로 2000-01~현재 전 품목(579개) 재수집 (`code/collect_kosis_cpi.py`). 공식 위계구조(UP_ITM_ID)를 그대로 써서 대/중분류 매핑도 official 데이터 기준으로 교체
+- [x] **CPI 월간 자동 업데이트 루틴** — Windows 작업 스케줄러 `KOSIS_CPI_Monthly_Update`, 매일 09:30 실행. 로컬 최신월-1개월~이번달을 재조회해 병합하고, 새 달이 감지되면 `run_forecast.py`까지 자동 재실행 (`code/update_kosis_monthly.py`, `code/run_kosis_monthly.ps1`)
 - [ ] 전기/가스/난방비 요금 개정이력 확보 → `code/manual_overrides.json` 반영
 - [ ] 가중치 히스토리(8개 시점) 파싱 완성 → 재구성 오차 축소
 - [ ] 여러 달에 걸친 워크포워드 백테스트
+
+---
+
+## 9. KOSIS Open API 접근 방법 (참고용)
+
+공식 매뉴얼(`kosis.kr/openapi/file/openApi_manual_v1.0.pdf`)에 나온 엔드포인트/파라미터로는
+계속 `err=20`(필수변수 누락)이 나서 직접 리버스엔지니어링으로 확인한 실제 동작 방식:
+
+- 엔드포인트: `https://kosis.kr/openapi/Param/statisticsParameterData.do` (매뉴얼의 `statisticsData.do`가 아님)
+- `itmId=T` 고정 (이 표는 "측정값" 축 선택지가 1개뿐)
+- `objL1=T10` (시도별 축 — 전국)
+- `objL2=<품목코드 or ALL>` (지출목적별 품목 축 — 실제로 원하는 분류)
+- `jsonVD=Y` 필수 — 빠지면 응답이 따옴표 없는 JS 객체 리터럴로 와서 `json.loads` 실패
+- 1회 최대 40,000행 — 품목 579개 기준 60개월치씩 나눠서 요청 (`code/collect_kosis_cpi.py`의 `CHUNK_MONTHS`)
+- 품목 위계구조는 `method=getMeta&type=ITM`로 조회 (ITM_ID/ITM_NM/UP_ITM_ID)
+- 인증키는 `code/kosis_api_key.txt`에 저장 (`.gitignore` 처리됨, 절대 커밋하지 않음)

@@ -1,0 +1,4 @@
+# API 인증키 등 민감정보 - git에 올리지 않음
+code/kosis_api_key.txt
+*.pyc
+__pycache__/
