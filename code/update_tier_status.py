@@ -25,6 +25,8 @@ def classify(row) -> tuple[str, str]:
             return "자동화 완료", "축산유통정보(다봄, requests 자동수집)"
         if name in cmp.KAMIS_ITEMS:
             return "미자동화(수동조회 필요)", "KAMIS 농산물유통정보 (자동수집 미해결 - 서버 500 오류)"
+        if name in models.TREND_ANCHOR_ITEMS:
+            return "자동화 완료(장기추세만)", "K-apt 공동주택관리정보시스템 (레벨상관 0.96, MoM상관 약해서 계절패턴+장기추세만 반영)"
         return "자동화(외부데이터 없음)", "CPI 자체시계열 (백테스트 기반 모델 자동선택 + 상위분류 축소)"
 
     if tier == "B":

@@ -27,7 +27,9 @@ def load_data():
     item_master = pd.read_csv(PROC_DIR / "item_master.csv")
     hierarchy = pd.read_csv(PROC_DIR / "item_hierarchy.csv")
     external = pd.read_csv(PROC_DIR / "external_panel.csv")
-    return panel, item_master, hierarchy, external
+    kapt_path = PROC_DIR / "kapt_management_fee_monthly.csv"
+    kapt = pd.read_csv(kapt_path) if kapt_path.exists() else pd.DataFrame(columns=["date"])
+    return panel, item_master, hierarchy, external, kapt
 
 
 def pivot_panel(panel: pd.DataFrame) -> pd.DataFrame:
@@ -54,9 +56,10 @@ def group_from_detail(detail: str) -> str | None:
 
 
 def run(target_override_month: str | None = None, verbose: bool = True):
-    panel, item_master, hierarchy, external = load_data()
+    panel, item_master, hierarchy, external, kapt = load_data()
     wide = pivot_panel(panel)
     external = external.set_index("date")
+    kapt_wide = kapt.set_index("date") if len(kapt) else kapt
 
     merged = item_master.merge(hierarchy[["item_name", "top_category"]], on="item_name", how="left")
     overrides = models.load_overrides()
@@ -105,7 +108,11 @@ def run(target_override_month: str | None = None, verbose: bool = True):
 
         hist = wide[name]
 
-        if tier == "A":
+        if tier == "A" and name in models.TREND_ANCHOR_ITEMS:
+            ext_col = models.TREND_ANCHOR_ITEMS[name]
+            ext_hist = kapt_wide[ext_col] if (len(kapt_wide) and ext_col in kapt_wide.columns) else None
+            res = models.forecast_seasonal_plus_trend(hist, ext_hist)
+        elif tier == "A":
             parent_mom = compute_parent_trend(wide, row.get("top_category"))
             res = models.forecast_tier_a(hist, parent_trend_mom=parent_mom)
         elif tier == "B":

@@ -235,6 +235,78 @@ def forecast_tier_b(hist: pd.Series, detail: str, target_ym: str,
 
 
 # ---------------------------------------------------------------------------
+# Tier A 보조: 장기추세만 신뢰할 수 있는 외부지표(K-apt 공동주택관리비 등)를
+# "과거 동월 변동치(계절 패턴) + 외부지표 장기추세" 조합으로 반영
+# ---------------------------------------------------------------------------
+
+
+def _seasonal_median_mom(hist: pd.Series, n_years: int = 5) -> float | None:
+    """Tier B와 동일한 방식: 최근 n_years개년의 '전월->해당월' 변동률 중앙값."""
+    hist = hist.dropna()
+    n = len(hist)
+    moms = []
+    for years_back in range(1, n_years + 1):
+        idx_prev = -(12 * years_back + 1)
+        idx_cur = -(12 * years_back)
+        if n + idx_prev < 0:
+            break
+        prev, cur = hist.iloc[idx_prev], hist.iloc[idx_cur]
+        if prev and prev != 0 and np.isfinite(prev) and np.isfinite(cur):
+            moms.append(cur / prev - 1)
+    if not moms:
+        return None
+    return float(np.median(moms))
+
+
+def _trend_mom_from_external(ext_hist: pd.Series, months_back: int = 12) -> float | None:
+    """외부지표의 최근 YoY 성장률을 월간 등가율로 환산(레벨은 믿을만하지만
+    MoM 노이즈가 큰 지표를 '현재 장기추세 속도'만 뽑아 쓰는 용도)."""
+    ext_hist = ext_hist.dropna()
+    if len(ext_hist) < months_back + 1:
+        return None
+    yoy = ext_hist.iloc[-1] / ext_hist.iloc[-1 - months_back] - 1
+    if not np.isfinite(yoy):
+        return None
+    return (1 + yoy) ** (1 / months_back) - 1
+
+
+# CPI 품목명 -> 장기추세만 참고하는 외부지표 소스 파일의 컬럼명
+# (레벨상관은 높지만 MoM 노이즈가 커서 forecast_seasonal_plus_trend로만 사용)
+TREND_ANCHOR_ITEMS = {
+    "공동주택관리비": "공용관리비",
+}
+
+
+def forecast_seasonal_plus_trend(hist: pd.Series, ext_hist: pd.Series | None,
+                                  seasonal_weight: float = 0.6) -> dict:
+    """과거 동월 변동치(계절패턴, CPI 자체) + 외부지표 장기추세를 가중평균해서 예측.
+    K-apt처럼 '레벨은 CPI와 거의 같이 움직이지만(상관 0.9+) MoM은 노이즈가 커서
+    직접 회귀변수로 못 쓰는' 지표를 그 지표 자체의 MoM이 아니라 스무딩된
+    장기추세(YoY -> 월간 등가율)만 뽑아 쓴다."""
+    hist = hist.dropna()
+    last_val = hist.iloc[-1]
+    seasonal_mom = _seasonal_median_mom(hist)
+    trend_mom = _trend_mom_from_external(ext_hist) if ext_hist is not None else None
+
+    if seasonal_mom is None and trend_mom is None:
+        return forecast_tier_a(hist)
+    if trend_mom is None:
+        blended = seasonal_mom
+        method = "seasonal_only(no_external_trend)"
+    elif seasonal_mom is None:
+        blended = trend_mom
+        method = "external_trend_only"
+    else:
+        blended = seasonal_weight * seasonal_mom + (1 - seasonal_weight) * trend_mom
+        method = f"seasonal({seasonal_weight:.0%})+external_trend({1-seasonal_weight:.0%})"
+
+    forecast_val = last_val * (1 + blended)
+    return {"forecast": forecast_val, "method": method, "mom_pct": blended * 100,
+            "seasonal_mom_pct": seasonal_mom * 100 if seasonal_mom is not None else None,
+            "external_trend_mom_pct": trend_mom * 100 if trend_mom is not None else None}
+
+
+# ---------------------------------------------------------------------------
 # Tier C: 정기개정형 (계단식) - 기본 보합, 수동 오버라이드 지원
 # ---------------------------------------------------------------------------
 
