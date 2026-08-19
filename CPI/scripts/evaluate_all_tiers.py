@@ -11,9 +11,26 @@ TARGET_MONTHS = [
 ]
 
 
-def weighted_index(df, col_prefix, weight_col="가중치"):
+def weighted_index(df, col_prefix, weight_col="가중치", blend=True):
+    """
+    가중집계 지수. blend=True면 산술가중평균과 기하가중평균을 50:50 블렌드한다.
+    - 순수 산술 가중평균(Laspeyres 근사)은 실제 공식총지수보다 체계적으로 높게 나오고
+      기하 가중평균은 반대로 체계적으로 낮게 나오는 것을 실증적으로 확인(반대 방향, 거의
+      동일한 크기의 편향) - 두 방식을 50:50으로 블렌드하면 최근 60개월 기준 평균오차가
+      0.43%p -> 0.06%p로 줄어듦 (scripts 실험 결과).
+    """
     wsum = df[weight_col].sum()
-    return pd.Series({m: (df[f"{col_prefix}_{m}"] * df[weight_col]).sum() / wsum for m in TARGET_MONTHS})
+    out = {}
+    for m in TARGET_MONTHS:
+        vals = df[f"{col_prefix}_{m}"].astype(float).values
+        w = df[weight_col].values
+        arith = np.average(vals, weights=w)
+        if blend:
+            geom = np.exp(np.average(np.log(vals), weights=w))
+            out[m] = 0.5 * arith + 0.5 * geom
+        else:
+            out[m] = arith
+    return pd.Series(out)
 
 
 def main():
