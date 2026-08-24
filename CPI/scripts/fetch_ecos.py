@@ -35,7 +35,7 @@ def main():
     key = load_key()
 
     # 1) PPI 총지수 (월별, 2020=100)
-    ppi = fetch_statistic_search(key, "404Y014", "M", "200001", "202607", "*AA")
+    ppi = fetch_statistic_search(key, "404Y014", "M", "200001", "202612", "*AA")
     ppi = ppi[["TIME", "DATA_VALUE"]].rename(columns={"TIME": "기간", "DATA_VALUE": "PPI총지수(2020=100)"})
     ppi["기간"] = ppi["기간"].str[:4] + "-" + ppi["기간"].str[4:6]
     ppi["PPI총지수(2020=100)"] = pd.to_numeric(ppi["PPI총지수(2020=100)"])
@@ -43,7 +43,7 @@ def main():
     print("PPI:", ppi.shape, ppi["기간"].min(), "~", ppi["기간"].max())
 
     # 2) 원/달러 환율 매매기준율 (일별 -> 월평균)
-    fx = fetch_statistic_search(key, "731Y001", "D", "20000101", "20260819", "0000001")
+    fx = fetch_statistic_search(key, "731Y001", "D", "20000101", "20261231", "0000001")
     fx = fx[["TIME", "DATA_VALUE"]].rename(columns={"TIME": "일자", "DATA_VALUE": "원달러환율"})
     fx["원달러환율"] = pd.to_numeric(fx["원달러환율"])
     fx["기간"] = fx["일자"].str[:4] + "-" + fx["일자"].str[4:6]
