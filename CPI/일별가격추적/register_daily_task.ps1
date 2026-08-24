@@ -5,7 +5,7 @@
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
     -Argument '-ExecutionPolicy Bypass -File "C:\Users\infomax\Documents\DB for Claude\JWS-web-DB-Projects\CPI\일별가격추적\run_daily.ps1"'
-$trigger = New-ScheduledTaskTrigger -Daily -At 08:00
+$trigger = New-ScheduledTaskTrigger -Daily -At 12:00
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
 
 Register-ScheduledTask -TaskName "CPI_DailyPriceCollector" `
