@@ -1,0 +1,2907 @@
+[
+ {
+  "level": 0,
+  "name": "0 총지수",
+  "value": 120.05
+ },
+ {
+  "level": 0,
+  "name": "01 식료품 및 비주류음료",
+  "value": 128.27
+ },
+ {
+  "level": 1,
+  "name": "01.1 식료품",
+  "value": 128.07
+ },
+ {
+  "level": 2,
+  "name": "빵 및 곡물",
+  "value": 130.23
+ },
+ {
+  "level": 3,
+  "name": "쌀",
+  "value": 116.51
+ },
+ {
+  "level": 3,
+  "name": "현미",
+  "value": 126.72
+ },
+ {
+  "level": 3,
+  "name": "찹쌀",
+  "value": 132.02
+ },
+ {
+  "level": 3,
+  "name": "보리쌀",
+  "value": 176.08
+ },
+ {
+  "level": 3,
+  "name": "콩",
+  "value": 104.08
+ },
+ {
+  "level": 3,
+  "name": "땅콩",
+  "value": 120.83
+ },
+ {
+  "level": 3,
+  "name": "혼식곡",
+  "value": 121.13
+ },
+ {
+  "level": 3,
+  "name": "밀가루",
+  "value": 128.78
+ },
+ {
+  "level": 3,
+  "name": "국수",
+  "value": 165.94
+ },
+ {
+  "level": 3,
+  "name": "라면",
+  "value": 127.62
+ },
+ {
+  "level": 3,
+  "name": "당면",
+  "value": 149.22
+ },
+ {
+  "level": 3,
+  "name": "두부",
+  "value": 109.6
+ },
+ {
+  "level": 3,
+  "name": "시리얼",
+  "value": 135.49
+ },
+ {
+  "level": 3,
+  "name": "부침가루",
+  "value": 142.97
+ },
+ {
+  "level": 3,
+  "name": "케이크",
+  "value": 132.25
+ },
+ {
+  "level": 3,
+  "name": "빵",
+  "value": 142.6
+ },
+ {
+  "level": 3,
+  "name": "떡",
+  "value": 130.44
+ },
+ {
+  "level": 3,
+  "name": "파스타면",
+  "value": 129.36
+ },
+ {
+  "level": 2,
+  "name": "육류",
+  "value": 126.07
+ },
+ {
+  "level": 3,
+  "name": "국산쇠고기",
+  "value": 109.39
+ },
+ {
+  "level": 3,
+  "name": "수입쇠고기",
+  "value": 142.91
+ },
+ {
+  "level": 3,
+  "name": "돼지고기",
+  "value": 133.57
+ },
+ {
+  "level": 3,
+  "name": "닭고기",
+  "value": 133.56
+ },
+ {
+  "level": 3,
+  "name": "소시지",
+  "value": 122.91
+ },
+ {
+  "level": 3,
+  "name": "햄및베이컨",
+  "value": 126.28
+ },
+ {
+  "level": 3,
+  "name": "기타육류가공품",
+  "value": 138.08
+ },
+ {
+  "level": 2,
+  "name": "어류 및 수산",
+  "value": 124.43
+ },
+ {
+  "level": 3,
+  "name": "갈치",
+  "value": 123.81
+ },
+ {
+  "level": 3,
+  "name": "명태",
+  "value": 111.67
+ },
+ {
+  "level": 3,
+  "name": "조기",
+  "value": 133.07
+ },
+ {
+  "level": 3,
+  "name": "고등어",
+  "value": 138.11
+ },
+ {
+  "level": 3,
+  "name": "오징어",
+  "value": 130.52
+ },
+ {
+  "level": 3,
+  "name": "게",
+  "value": 94.67
+ },
+ {
+  "level": 3,
+  "name": "굴",
+  "value": 115.11
+ },
+ {
+  "level": 3,
+  "name": "조개",
+  "value": 121.79
+ },
+ {
+  "level": 3,
+  "name": "전복",
+  "value": 84.01
+ },
+ {
+  "level": 3,
+  "name": "새우",
+  "value": 124.62
+ },
+ {
+  "level": 3,
+  "name": "마른멸치",
+  "value": 110.86
+ },
+ {
+  "level": 3,
+  "name": "마른오징어",
+  "value": 126.53
+ },
+ {
+  "level": 3,
+  "name": "낙지",
+  "value": 126.2
+ },
+ {
+  "level": 3,
+  "name": "오징어채",
+  "value": 139.1
+ },
+ {
+  "level": 3,
+  "name": "북어채",
+  "value": 137.0
+ },
+ {
+  "level": 3,
+  "name": "어묵",
+  "value": 129.72
+ },
+ {
+  "level": 3,
+  "name": "맛살",
+  "value": 147.5
+ },
+ {
+  "level": 3,
+  "name": "수산물통조림",
+  "value": 130.27
+ },
+ {
+  "level": 3,
+  "name": "젓갈",
+  "value": 125.5
+ },
+ {
+  "level": 2,
+  "name": "우유, 치즈 및 계란",
+  "value": 133.52
+ },
+ {
+  "level": 3,
+  "name": "우유",
+  "value": 124.55
+ },
+ {
+  "level": 3,
+  "name": "분유",
+  "value": 113.45
+ },
+ {
+  "level": 3,
+  "name": "치즈",
+  "value": 144.79
+ },
+ {
+  "level": 3,
+  "name": "발효유",
+  "value": 128.16
+ },
+ {
+  "level": 3,
+  "name": "달걀",
+  "value": 152.83
+ },
+ {
+  "level": 2,
+  "name": "식용유지",
+  "value": 155.94
+ },
+ {
+  "level": 3,
+  "name": "참기름",
+  "value": 160.34
+ },
+ {
+  "level": 3,
+  "name": "식용유",
+  "value": 149.73
+ },
+ {
+  "level": 2,
+  "name": "과일",
+  "value": 140.42
+ },
+ {
+  "level": 3,
+  "name": "사과",
+  "value": 163.59
+ },
+ {
+  "level": 3,
+  "name": "배",
+  "value": 166.16
+ },
+ {
+  "level": 3,
+  "name": "복숭아",
+  "value": 135.83
+ },
+ {
+  "level": 3,
+  "name": "포도",
+  "value": 134.08
+ },
+ {
+  "level": 3,
+  "name": "밤",
+  "value": 112.83
+ },
+ {
+  "level": 3,
+  "name": "감",
+  "value": 119.01
+ },
+ {
+  "level": 3,
+  "name": "귤",
+  "value": 205.43
+ },
+ {
+  "level": 3,
+  "name": "오렌지",
+  "value": 114.33
+ },
+ {
+  "level": 3,
+  "name": "참외",
+  "value": 93.48
+ },
+ {
+  "level": 3,
+  "name": "수박",
+  "value": 145.98
+ },
+ {
+  "level": 3,
+  "name": "딸기",
+  "value": 92.4
+ },
+ {
+  "level": 3,
+  "name": "바나나",
+  "value": 108.37
+ },
+ {
+  "level": 3,
+  "name": "키위",
+  "value": 146.47
+ },
+ {
+  "level": 3,
+  "name": "블루베리",
+  "value": 144.01
+ },
+ {
+  "level": 3,
+  "name": "망고",
+  "value": 131.41
+ },
+ {
+  "level": 3,
+  "name": "체리",
+  "value": 101.76
+ },
+ {
+  "level": 3,
+  "name": "아보카도",
+  "value": 80.77
+ },
+ {
+  "level": 3,
+  "name": "파인애플",
+  "value": 117.67
+ },
+ {
+  "level": 3,
+  "name": "아몬드",
+  "value": 111.96
+ },
+ {
+  "level": 3,
+  "name": "과일가공품",
+  "value": 151.13
+ },
+ {
+  "level": 2,
+  "name": "채소 및 해조",
+  "value": 115.52
+ },
+ {
+  "level": 3,
+  "name": "배추",
+  "value": 112.63
+ },
+ {
+  "level": 3,
+  "name": "상추",
+  "value": 148.53
+ },
+ {
+  "level": 3,
+  "name": "시금치",
+  "value": 214.81
+ },
+ {
+  "level": 3,
+  "name": "양배추",
+  "value": 79.64
+ },
+ {
+  "level": 3,
+  "name": "미나리",
+  "value": 150.2
+ },
+ {
+  "level": 3,
+  "name": "깻잎",
+  "value": 133.51
+ },
+ {
+  "level": 3,
+  "name": "부추",
+  "value": 119.96
+ },
+ {
+  "level": 3,
+  "name": "무",
+  "value": 101.08
+ },
+ {
+  "level": 3,
+  "name": "열무",
+  "value": 166.22
+ },
+ {
+  "level": 3,
+  "name": "당근",
+  "value": 82.42
+ },
+ {
+  "level": 3,
+  "name": "감자",
+  "value": 98.18
+ },
+ {
+  "level": 3,
+  "name": "고구마",
+  "value": 101.36
+ },
+ {
+  "level": 3,
+  "name": "도라지",
+  "value": 132.95
+ },
+ {
+  "level": 3,
+  "name": "콩나물",
+  "value": 109.23
+ },
+ {
+  "level": 3,
+  "name": "버섯",
+  "value": 110.58
+ },
+ {
+  "level": 3,
+  "name": "오이",
+  "value": 133.54
+ },
+ {
+  "level": 3,
+  "name": "풋고추",
+  "value": 119.86
+ },
+ {
+  "level": 3,
+  "name": "호박",
+  "value": 96.74
+ },
+ {
+  "level": 3,
+  "name": "가지",
+  "value": 101.88
+ },
+ {
+  "level": 3,
+  "name": "토마토",
+  "value": 89.71
+ },
+ {
+  "level": 3,
+  "name": "파",
+  "value": 114.07
+ },
+ {
+  "level": 3,
+  "name": "양파",
+  "value": 88.06
+ },
+ {
+  "level": 3,
+  "name": "마늘",
+  "value": 139.17
+ },
+ {
+  "level": 3,
+  "name": "브로콜리",
+  "value": 126.14
+ },
+ {
+  "level": 3,
+  "name": "고사리",
+  "value": 127.46
+ },
+ {
+  "level": 3,
+  "name": "파프리카",
+  "value": 86.73
+ },
+ {
+  "level": 3,
+  "name": "단무지",
+  "value": 128.98
+ },
+ {
+  "level": 3,
+  "name": "김",
+  "value": 155.15
+ },
+ {
+  "level": 3,
+  "name": "맛김",
+  "value": 133.87
+ },
+ {
+  "level": 3,
+  "name": "미역",
+  "value": 138.96
+ },
+ {
+  "level": 2,
+  "name": "과자, 빙과류 및 당류",
+  "value": 128.61
+ },
+ {
+  "level": 3,
+  "name": "초콜릿",
+  "value": 162.68
+ },
+ {
+  "level": 3,
+  "name": "사탕",
+  "value": 117.08
+ },
+ {
+  "level": 3,
+  "name": "껌",
+  "value": 117.18
+ },
+ {
+  "level": 3,
+  "name": "아이스크림",
+  "value": 129.09
+ },
+ {
+  "level": 3,
+  "name": "비스킷",
+  "value": 134.85
+ },
+ {
+  "level": 3,
+  "name": "스낵과자",
+  "value": 122.75
+ },
+ {
+  "level": 3,
+  "name": "파이",
+  "value": 116.79
+ },
+ {
+  "level": 3,
+  "name": "설탕",
+  "value": 142.87
+ },
+ {
+  "level": 3,
+  "name": "잼",
+  "value": 172.06
+ },
+ {
+  "level": 3,
+  "name": "꿀",
+  "value": 117.02
+ },
+ {
+  "level": 3,
+  "name": "물엿",
+  "value": 137.32
+ },
+ {
+  "level": 2,
+  "name": "기타 식료품",
+  "value": 126.77
+ },
+ {
+  "level": 3,
+  "name": "고춧가루",
+  "value": 114.6
+ },
+ {
+  "level": 3,
+  "name": "참깨",
+  "value": 139.34
+ },
+ {
+  "level": 3,
+  "name": "생강",
+  "value": 106.02
+ },
+ {
+  "level": 3,
+  "name": "소금",
+  "value": 177.08
+ },
+ {
+  "level": 3,
+  "name": "간장",
+  "value": 139.65
+ },
+ {
+  "level": 3,
+  "name": "된장",
+  "value": 140.66
+ },
+ {
+  "level": 3,
+  "name": "양념소스",
+  "value": 141.89
+ },
+ {
+  "level": 3,
+  "name": "고추장",
+  "value": 140.51
+ },
+ {
+  "level": 3,
+  "name": "카레",
+  "value": 144.99
+ },
+ {
+  "level": 3,
+  "name": "식초",
+  "value": 165.02
+ },
+ {
+  "level": 3,
+  "name": "드레싱",
+  "value": 175.06
+ },
+ {
+  "level": 3,
+  "name": "혼합조미료",
+  "value": 134.71
+ },
+ {
+  "level": 3,
+  "name": "스프",
+  "value": 129.97
+ },
+ {
+  "level": 3,
+  "name": "이유식",
+  "value": 111.12
+ },
+ {
+  "level": 3,
+  "name": "김치",
+  "value": 134.31
+ },
+ {
+  "level": 3,
+  "name": "밑반찬",
+  "value": 118.32
+ },
+ {
+  "level": 3,
+  "name": "냉동식품",
+  "value": 119.48
+ },
+ {
+  "level": 3,
+  "name": "즉석식품",
+  "value": 128.9
+ },
+ {
+  "level": 3,
+  "name": "편의점도시락",
+  "value": 119.2
+ },
+ {
+  "level": 3,
+  "name": "삼각김밥",
+  "value": 116.26
+ },
+ {
+  "level": 1,
+  "name": "01.2 비주류 음료",
+  "value": 130.59
+ },
+ {
+  "level": 2,
+  "name": "커피, 차 및 코코아",
+  "value": 139.91
+ },
+ {
+  "level": 3,
+  "name": "커피",
+  "value": 146.06
+ },
+ {
+  "level": 3,
+  "name": "차",
+  "value": 122.39
+ },
+ {
+  "level": 2,
+  "name": "생수, 청량음료, 과일주스 및 채소주스",
+  "value": 125.33
+ },
+ {
+  "level": 3,
+  "name": "주스",
+  "value": 136.32
+ },
+ {
+  "level": 3,
+  "name": "두유",
+  "value": 127.92
+ },
+ {
+  "level": 3,
+  "name": "생수",
+  "value": 116.77
+ },
+ {
+  "level": 3,
+  "name": "기능성음료",
+  "value": 120.0
+ },
+ {
+  "level": 3,
+  "name": "탄산음료",
+  "value": 123.53
+ },
+ {
+  "level": 3,
+  "name": "기타음료",
+  "value": 123.5
+ },
+ {
+  "level": 0,
+  "name": "02 주류 및 담배",
+  "value": 105.29
+ },
+ {
+  "level": 1,
+  "name": "02.1 주류",
+  "value": 113.96
+ },
+ {
+  "level": 2,
+  "name": "주류",
+  "value": 113.96
+ },
+ {
+  "level": 3,
+  "name": "소주",
+  "value": 108.92
+ },
+ {
+  "level": 3,
+  "name": "과실주",
+  "value": 104.07
+ },
+ {
+  "level": 3,
+  "name": "맥주",
+  "value": 116.19
+ },
+ {
+  "level": 3,
+  "name": "막걸리",
+  "value": 123.94
+ },
+ {
+  "level": 3,
+  "name": "양주",
+  "value": 117.34
+ },
+ {
+  "level": 3,
+  "name": "약주",
+  "value": 105.91
+ },
+ {
+  "level": 1,
+  "name": "02.2 담배",
+  "value": 99.77
+ },
+ {
+  "level": 2,
+  "name": "담배",
+  "value": 99.77
+ },
+ {
+  "level": 3,
+  "name": "담배",
+  "value": 99.77
+ },
+ {
+  "level": 0,
+  "name": "03 의류 및 신발",
+  "value": 119.72
+ },
+ {
+  "level": 1,
+  "name": "03.1 의류",
+  "value": 120.42
+ },
+ {
+  "level": 2,
+  "name": "남자의류",
+  "value": 119.07
+ },
+ {
+  "level": 3,
+  "name": "남자외의",
+  "value": 120.22
+ },
+ {
+  "level": 3,
+  "name": "남자상의",
+  "value": 115.06
+ },
+ {
+  "level": 3,
+  "name": "남자하의",
+  "value": 123.64
+ },
+ {
+  "level": 3,
+  "name": "남자내의",
+  "value": 111.64
+ },
+ {
+  "level": 2,
+  "name": "여자의류",
+  "value": 119.22
+ },
+ {
+  "level": 3,
+  "name": "여자외의",
+  "value": 115.76
+ },
+ {
+  "level": 3,
+  "name": "원피스",
+  "value": 135.33
+ },
+ {
+  "level": 3,
+  "name": "여자상의",
+  "value": 117.44
+ },
+ {
+  "level": 3,
+  "name": "여자하의",
+  "value": 123.83
+ },
+ {
+  "level": 3,
+  "name": "여자내의",
+  "value": 110.14
+ },
+ {
+  "level": 2,
+  "name": "캐쥬얼의류",
+  "value": 120.61
+ },
+ {
+  "level": 3,
+  "name": "점퍼",
+  "value": 120.59
+ },
+ {
+  "level": 3,
+  "name": "티셔츠",
+  "value": 123.77
+ },
+ {
+  "level": 3,
+  "name": "스웨터",
+  "value": 118.73
+ },
+ {
+  "level": 3,
+  "name": "청바지",
+  "value": 124.42
+ },
+ {
+  "level": 3,
+  "name": "운동복",
+  "value": 112.73
+ },
+ {
+  "level": 3,
+  "name": "등산복",
+  "value": 110.44
+ },
+ {
+  "level": 2,
+  "name": "아동복 · 유아복",
+  "value": 120.11
+ },
+ {
+  "level": 3,
+  "name": "유아동복",
+  "value": 120.11
+ },
+ {
+  "level": 2,
+  "name": "기타의류 및 의류 장신구",
+  "value": 112.54
+ },
+ {
+  "level": 3,
+  "name": "양말",
+  "value": 104.15
+ },
+ {
+  "level": 3,
+  "name": "모자",
+  "value": 113.28
+ },
+ {
+  "level": 3,
+  "name": "장갑",
+  "value": 157.86
+ },
+ {
+  "level": 2,
+  "name": "의류 세탁, 수선 및 임차",
+  "value": 150.71
+ },
+ {
+  "level": 3,
+  "name": "의복수선료",
+  "value": 134.76
+ },
+ {
+  "level": 3,
+  "name": "세탁료",
+  "value": 153.58
+ },
+ {
+  "level": 1,
+  "name": "03.2 신발",
+  "value": 115.84
+ },
+ {
+  "level": 2,
+  "name": "신발",
+  "value": 115.84
+ },
+ {
+  "level": 3,
+  "name": "아동화",
+  "value": 116.17
+ },
+ {
+  "level": 3,
+  "name": "구두",
+  "value": 113.81
+ },
+ {
+  "level": 3,
+  "name": "운동화",
+  "value": 115.05
+ },
+ {
+  "level": 3,
+  "name": "실내화",
+  "value": 128.43
+ },
+ {
+  "level": 0,
+  "name": "04 주택, 수도, 전기 및 연료",
+  "value": 117.59
+ },
+ {
+  "level": 1,
+  "name": "04.1 주택임차료",
+  "value": 106.24
+ },
+ {
+  "level": 2,
+  "name": "주택임차료",
+  "value": 106.24
+ },
+ {
+  "level": 3,
+  "name": "전세",
+  "value": 106.38
+ },
+ {
+  "level": 3,
+  "name": "월세",
+  "value": 106.02
+ },
+ {
+  "level": 1,
+  "name": "04.3 주거시설 유지 · 보수",
+  "value": 127.14
+ },
+ {
+  "level": 2,
+  "name": "주거시설 유지 · 보수",
+  "value": 127.14
+ },
+ {
+  "level": 3,
+  "name": "주택수선재료",
+  "value": 128.03
+ },
+ {
+  "level": 3,
+  "name": "설비수리비",
+  "value": 126.82
+ },
+ {
+  "level": 1,
+  "name": "04.4 수도 및 주거관련 서비스",
+  "value": 129.19
+ },
+ {
+  "level": 2,
+  "name": "상하수도료",
+  "value": 124.8
+ },
+ {
+  "level": 3,
+  "name": "상수도료",
+  "value": 119.5
+ },
+ {
+  "level": 3,
+  "name": "하수도료",
+  "value": 132.83
+ },
+ {
+  "level": 2,
+  "name": "기타 주거관련 서비스",
+  "value": 130.72
+ },
+ {
+  "level": 3,
+  "name": "공동주택관리비",
+  "value": 131.99
+ },
+ {
+  "level": 3,
+  "name": "쓰레기봉투료",
+  "value": 106.1
+ },
+ {
+  "level": 3,
+  "name": "정화조청소료",
+  "value": 117.18
+ },
+ {
+  "level": 1,
+  "name": "04.5 전기, 가스 및 기타연료",
+  "value": 140.18
+ },
+ {
+  "level": 2,
+  "name": "전기",
+  "value": 126.47
+ },
+ {
+  "level": 3,
+  "name": "전기료",
+  "value": 126.47
+ },
+ {
+  "level": 2,
+  "name": "가스",
+  "value": 146.71
+ },
+ {
+  "level": 3,
+  "name": "도시가스",
+  "value": 146.49
+ },
+ {
+  "level": 3,
+  "name": "취사용LPG",
+  "value": 146.69
+ },
+ {
+  "level": 2,
+  "name": "기타연료 및 에너지",
+  "value": 179.9
+ },
+ {
+  "level": 3,
+  "name": "등유",
+  "value": 182.51
+ },
+ {
+  "level": 3,
+  "name": "지역난방비",
+  "value": 163.15
+ },
+ {
+  "level": 3,
+  "name": "부탄가스",
+  "value": 151.78
+ },
+ {
+  "level": 0,
+  "name": "05 가정용품 및 가사 서비스",
+  "value": 123.16
+ },
+ {
+  "level": 1,
+  "name": "05.1 가구, 가사비품 및 카페트",
+  "value": 136.04
+ },
+ {
+  "level": 2,
+  "name": "가구, 가사비품 및 카페트",
+  "value": 136.04
+ },
+ {
+  "level": 3,
+  "name": "장롱",
+  "value": 127.74
+ },
+ {
+  "level": 3,
+  "name": "침대",
+  "value": 133.99
+ },
+ {
+  "level": 3,
+  "name": "거실장",
+  "value": 127.83
+ },
+ {
+  "level": 3,
+  "name": "소파",
+  "value": 137.23
+ },
+ {
+  "level": 3,
+  "name": "책상",
+  "value": 131.12
+ },
+ {
+  "level": 3,
+  "name": "의자",
+  "value": 120.32
+ },
+ {
+  "level": 3,
+  "name": "식탁",
+  "value": 130.42
+ },
+ {
+  "level": 3,
+  "name": "싱크대",
+  "value": 157.43
+ },
+ {
+  "level": 1,
+  "name": "05.2 가정용 섬유제품",
+  "value": 115.93
+ },
+ {
+  "level": 2,
+  "name": "가정용 섬유제품",
+  "value": 115.93
+ },
+ {
+  "level": 3,
+  "name": "침구",
+  "value": 117.05
+ },
+ {
+  "level": 3,
+  "name": "커튼",
+  "value": 108.93
+ },
+ {
+  "level": 1,
+  "name": "05.3 가정용 기기",
+  "value": 111.87
+ },
+ {
+  "level": 2,
+  "name": "가정용 기구",
+  "value": 105.8
+ },
+ {
+  "level": 3,
+  "name": "전기밥솥",
+  "value": 98.26
+ },
+ {
+  "level": 3,
+  "name": "가스레인지",
+  "value": 106.61
+ },
+ {
+  "level": 3,
+  "name": "전자레인지",
+  "value": 106.32
+ },
+ {
+  "level": 3,
+  "name": "전기레인지",
+  "value": 104.17
+ },
+ {
+  "level": 3,
+  "name": "냉장고",
+  "value": 100.94
+ },
+ {
+  "level": 3,
+  "name": "김치냉장고",
+  "value": 111.04
+ },
+ {
+  "level": 3,
+  "name": "에어컨",
+  "value": 116.34
+ },
+ {
+  "level": 3,
+  "name": "선풍기",
+  "value": 89.3
+ },
+ {
+  "level": 3,
+  "name": "공기청정기",
+  "value": 91.22
+ },
+ {
+  "level": 3,
+  "name": "세탁기",
+  "value": 102.99
+ },
+ {
+  "level": 3,
+  "name": "의류건조기",
+  "value": 111.98
+ },
+ {
+  "level": 3,
+  "name": "식기세척기",
+  "value": 101.69
+ },
+ {
+  "level": 3,
+  "name": "청소기",
+  "value": 100.26
+ },
+ {
+  "level": 3,
+  "name": "소형주방가전",
+  "value": 119.67
+ },
+ {
+  "level": 3,
+  "name": "보온매트",
+  "value": 114.83
+ },
+ {
+  "level": 2,
+  "name": "가정용 기구 수리서비스",
+  "value": 127.31
+ },
+ {
+  "level": 3,
+  "name": "가전제품수리비",
+  "value": 161.24
+ },
+ {
+  "level": 3,
+  "name": "가전제품렌탈비",
+  "value": 97.21
+ },
+ {
+  "level": 1,
+  "name": "05.4 주방용품 및 가정용품",
+  "value": 125.88
+ },
+ {
+  "level": 2,
+  "name": "주방용품 및 가정용품",
+  "value": 125.88
+ },
+ {
+  "level": 3,
+  "name": "식기",
+  "value": 133.83
+ },
+ {
+  "level": 3,
+  "name": "컵",
+  "value": 108.11
+ },
+ {
+  "level": 3,
+  "name": "솥",
+  "value": 126.83
+ },
+ {
+  "level": 3,
+  "name": "프라이팬",
+  "value": 130.74
+ },
+ {
+  "level": 3,
+  "name": "냄비",
+  "value": 127.11
+ },
+ {
+  "level": 3,
+  "name": "수저",
+  "value": 115.75
+ },
+ {
+  "level": 3,
+  "name": "밀폐용기",
+  "value": 124.4
+ },
+ {
+  "level": 3,
+  "name": "부엌용용구",
+  "value": 130.14
+ },
+ {
+  "level": 1,
+  "name": "05.5 가정 · 정원용 공구 및 장비",
+  "value": 123.62
+ },
+ {
+  "level": 2,
+  "name": "가정 · 정원용 공구 및 장비",
+  "value": 123.62
+ },
+ {
+  "level": 3,
+  "name": "보일러",
+  "value": 121.0
+ },
+ {
+  "level": 3,
+  "name": "건전지",
+  "value": 149.96
+ },
+ {
+  "level": 3,
+  "name": "소형가사용품",
+  "value": 118.81
+ },
+ {
+  "level": 1,
+  "name": "05.6 일상 생활용품 및 가사 서비스",
+  "value": 134.33
+ },
+ {
+  "level": 2,
+  "name": "비내구성 가정용품",
+  "value": 133.82
+ },
+ {
+  "level": 3,
+  "name": "세탁세제",
+  "value": 128.21
+ },
+ {
+  "level": 3,
+  "name": "섬유유연제",
+  "value": 156.03
+ },
+ {
+  "level": 3,
+  "name": "전구",
+  "value": 110.89
+ },
+ {
+  "level": 3,
+  "name": "부엌용세제",
+  "value": 122.86
+ },
+ {
+  "level": 3,
+  "name": "청소용세제",
+  "value": 142.4
+ },
+ {
+  "level": 3,
+  "name": "살충제",
+  "value": 131.12
+ },
+ {
+  "level": 3,
+  "name": "가정용비닐용품",
+  "value": 158.56
+ },
+ {
+  "level": 3,
+  "name": "키친타월",
+  "value": 136.86
+ },
+ {
+  "level": 3,
+  "name": "방향제",
+  "value": 133.78
+ },
+ {
+  "level": 3,
+  "name": "습기제거제",
+  "value": 143.61
+ },
+ {
+  "level": 2,
+  "name": "가구내 고용 및 가사 서비스",
+  "value": 134.84
+ },
+ {
+  "level": 3,
+  "name": "가사도우미료",
+  "value": 123.91
+ },
+ {
+  "level": 3,
+  "name": "간병도우미료",
+  "value": 145.36
+ },
+ {
+  "level": 0,
+  "name": "06 보건",
+  "value": 107.04
+ },
+ {
+  "level": 1,
+  "name": "06.1 의료용품 및 장비",
+  "value": 103.21
+ },
+ {
+  "level": 2,
+  "name": "의약품",
+  "value": 104.36
+ },
+ {
+  "level": 3,
+  "name": "감기약",
+  "value": 128.41
+ },
+ {
+  "level": 3,
+  "name": "진통제",
+  "value": 119.98
+ },
+ {
+  "level": 3,
+  "name": "소화제",
+  "value": 123.42
+ },
+ {
+  "level": 3,
+  "name": "위장약",
+  "value": 108.16
+ },
+ {
+  "level": 3,
+  "name": "진해거담제",
+  "value": 115.11
+ },
+ {
+  "level": 3,
+  "name": "소염진통제",
+  "value": 115.54
+ },
+ {
+  "level": 3,
+  "name": "피부질환제",
+  "value": 115.42
+ },
+ {
+  "level": 3,
+  "name": "치과구강용약",
+  "value": 112.06
+ },
+ {
+  "level": 3,
+  "name": "조제약",
+  "value": 92.45
+ },
+ {
+  "level": 3,
+  "name": "한방약",
+  "value": 134.43
+ },
+ {
+  "level": 3,
+  "name": "인삼",
+  "value": 130.61
+ },
+ {
+  "level": 3,
+  "name": "홍삼",
+  "value": 111.11
+ },
+ {
+  "level": 3,
+  "name": "비타민제",
+  "value": 113.58
+ },
+ {
+  "level": 3,
+  "name": "건강기능식품",
+  "value": 102.68
+ },
+ {
+  "level": 3,
+  "name": "유산균",
+  "value": 90.83
+ },
+ {
+  "level": 3,
+  "name": "병원약품",
+  "value": 92.24
+ },
+ {
+  "level": 2,
+  "name": "의료용품 및 치료기기",
+  "value": 100.67
+ },
+ {
+  "level": 3,
+  "name": "종이기저귀",
+  "value": 116.96
+ },
+ {
+  "level": 3,
+  "name": "생리대",
+  "value": 111.64
+ },
+ {
+  "level": 3,
+  "name": "마스크",
+  "value": 70.36
+ },
+ {
+  "level": 3,
+  "name": "반창고",
+  "value": 103.24
+ },
+ {
+  "level": 3,
+  "name": "안경",
+  "value": 101.91
+ },
+ {
+  "level": 3,
+  "name": "콘택트렌즈",
+  "value": 106.05
+ },
+ {
+  "level": 3,
+  "name": "의료측정기",
+  "value": 99.72
+ },
+ {
+  "level": 3,
+  "name": "보청기",
+  "value": 102.88
+ },
+ {
+  "level": 3,
+  "name": "건강기기렌탈비",
+  "value": 119.94
+ },
+ {
+  "level": 3,
+  "name": "치료재료",
+  "value": 101.87
+ },
+ {
+  "level": 1,
+  "name": "06.2 외래환자 서비스",
+  "value": 111.83
+ },
+ {
+  "level": 2,
+  "name": "의료서비스",
+  "value": 112.26
+ },
+ {
+  "level": 3,
+  "name": "외래진료비",
+  "value": 111.43
+ },
+ {
+  "level": 3,
+  "name": "건강검진비",
+  "value": 108.62
+ },
+ {
+  "level": 3,
+  "name": "한방진료비",
+  "value": 119.47
+ },
+ {
+  "level": 3,
+  "name": "약국조제료",
+  "value": 119.9
+ },
+ {
+  "level": 2,
+  "name": "기타의료서비스",
+  "value": 111.17
+ },
+ {
+  "level": 3,
+  "name": "치과진료비",
+  "value": 115.25
+ },
+ {
+  "level": 3,
+  "name": "치과보철료",
+  "value": 107.4
+ },
+ {
+  "level": 1,
+  "name": "06.3 병원 서비스",
+  "value": 104.15
+ },
+ {
+  "level": 2,
+  "name": "병원 서비스",
+  "value": 104.15
+ },
+ {
+  "level": 3,
+  "name": "입원진료비",
+  "value": 110.14
+ },
+ {
+  "level": 3,
+  "name": "병원검사료",
+  "value": 63.4
+ },
+ {
+  "level": 0,
+  "name": "07 교통",
+  "value": 124.63
+ },
+ {
+  "level": 1,
+  "name": "07.1 운송장비",
+  "value": 110.96
+ },
+ {
+  "level": 2,
+  "name": "운송장비",
+  "value": 110.96
+ },
+ {
+  "level": 3,
+  "name": "소형승용차",
+  "value": 108.02
+ },
+ {
+  "level": 3,
+  "name": "중형승용차",
+  "value": 104.4
+ },
+ {
+  "level": 3,
+  "name": "대형승용차",
+  "value": 115.49
+ },
+ {
+  "level": 3,
+  "name": "경승용차",
+  "value": 108.35
+ },
+ {
+  "level": 3,
+  "name": "다목적승용차",
+  "value": 113.41
+ },
+ {
+  "level": 3,
+  "name": "수입승용차",
+  "value": 107.62
+ },
+ {
+  "level": 3,
+  "name": "전기동력차",
+  "value": 109.75
+ },
+ {
+  "level": 3,
+  "name": "자전거",
+  "value": 139.28
+ },
+ {
+  "level": 1,
+  "name": "07.2 개인운송장비 운영",
+  "value": 134.54
+ },
+ {
+  "level": 2,
+  "name": "개인운송장비 연료 및 윤활유",
+  "value": 141.2
+ },
+ {
+  "level": 3,
+  "name": "휘발유",
+  "value": 133.74
+ },
+ {
+  "level": 3,
+  "name": "경유",
+  "value": 153.44
+ },
+ {
+  "level": 3,
+  "name": "자동차용LPG",
+  "value": 138.66
+ },
+ {
+  "level": 2,
+  "name": "개인운송장비 소모품 및 유지 · 수리",
+  "value": 127.11
+ },
+ {
+  "level": 3,
+  "name": "자동차용품",
+  "value": 116.83
+ },
+ {
+  "level": 3,
+  "name": "블랙박스",
+  "value": 103.0
+ },
+ {
+  "level": 3,
+  "name": "자동차타이어",
+  "value": 121.04
+ },
+ {
+  "level": 3,
+  "name": "자동차수리비",
+  "value": 124.95
+ },
+ {
+  "level": 3,
+  "name": "엔진오일교체료",
+  "value": 157.99
+ },
+ {
+  "level": 3,
+  "name": "세차료",
+  "value": 141.32
+ },
+ {
+  "level": 2,
+  "name": "개인운송장비 관련 기타 서비스",
+  "value": 107.4
+ },
+ {
+  "level": 3,
+  "name": "자동차학원비",
+  "value": 116.24
+ },
+ {
+  "level": 3,
+  "name": "주차료",
+  "value": 113.03
+ },
+ {
+  "level": 3,
+  "name": "도로통행료",
+  "value": 95.82
+ },
+ {
+  "level": 3,
+  "name": "승용차임차료",
+  "value": 107.27
+ },
+ {
+  "level": 3,
+  "name": "대리운전이용료",
+  "value": 138.41
+ },
+ {
+  "level": 3,
+  "name": "자동차검사료",
+  "value": 100.0
+ },
+ {
+  "level": 1,
+  "name": "07.3 운송 서비스",
+  "value": 119.35
+ },
+ {
+  "level": 2,
+  "name": "철도 여객수송",
+  "value": 111.33
+ },
+ {
+  "level": 3,
+  "name": "열차료",
+  "value": 100.0
+ },
+ {
+  "level": 3,
+  "name": "도시철도료",
+  "value": 120.08
+ },
+ {
+  "level": 2,
+  "name": "도로 여객수송",
+  "value": 118.51
+ },
+ {
+  "level": 3,
+  "name": "시내버스료",
+  "value": 116.96
+ },
+ {
+  "level": 3,
+  "name": "시외버스료",
+  "value": 110.18
+ },
+ {
+  "level": 3,
+  "name": "택시료",
+  "value": 124.42
+ },
+ {
+  "level": 2,
+  "name": "항공 및 수상여객운송",
+  "value": 139.51
+ },
+ {
+  "level": 3,
+  "name": "국내항공료",
+  "value": 127.97
+ },
+ {
+  "level": 3,
+  "name": "국제항공료",
+  "value": 145.22
+ },
+ {
+  "level": 3,
+  "name": "여객선료",
+  "value": 133.09
+ },
+ {
+  "level": 2,
+  "name": "기타 여객운송",
+  "value": 123.24
+ },
+ {
+  "level": 3,
+  "name": "이삿짐운송료",
+  "value": 136.92
+ },
+ {
+  "level": 3,
+  "name": "택배이용료",
+  "value": 114.65
+ },
+ {
+  "level": 0,
+  "name": "08 통신",
+  "value": 102.48
+ },
+ {
+  "level": 1,
+  "name": "08.1 우편서비스",
+  "value": 123.56
+ },
+ {
+  "level": 2,
+  "name": "우편서비스",
+  "value": 123.56
+ },
+ {
+  "level": 3,
+  "name": "우편료",
+  "value": 123.56
+ },
+ {
+  "level": 1,
+  "name": "08.2 전화 및 팩스장비",
+  "value": 103.88
+ },
+ {
+  "level": 2,
+  "name": "전화 및 팩스장비",
+  "value": 103.88
+ },
+ {
+  "level": 3,
+  "name": "휴대전화기",
+  "value": 103.88
+ },
+ {
+  "level": 1,
+  "name": "08.3 전화 및 팩스 서비스",
+  "value": 101.94
+ },
+ {
+  "level": 2,
+  "name": "전화 및 팩스 서비스",
+  "value": 101.94
+ },
+ {
+  "level": 3,
+  "name": "유선전화료",
+  "value": 100.37
+ },
+ {
+  "level": 3,
+  "name": "휴대전화료",
+  "value": 102.05
+ },
+ {
+  "level": 3,
+  "name": "인터넷이용료",
+  "value": 100.62
+ },
+ {
+  "level": 3,
+  "name": "휴대전화기수리비",
+  "value": 110.79
+ },
+ {
+  "level": 0,
+  "name": "09 오락 및 문화",
+  "value": 115.8
+ },
+ {
+  "level": 1,
+  "name": "09.1 음향, 영상, 사진 및 정보처리 장비",
+  "value": 115.2
+ },
+ {
+  "level": 2,
+  "name": "영상 · 음향기기",
+  "value": 91.61
+ },
+ {
+  "level": 3,
+  "name": "TV",
+  "value": 88.06
+ },
+ {
+  "level": 3,
+  "name": "영상음향기기",
+  "value": 100.14
+ },
+ {
+  "level": 2,
+  "name": "정보처리기기 · 소모품",
+  "value": 128.06
+ },
+ {
+  "level": 3,
+  "name": "컴퓨터",
+  "value": 116.31
+ },
+ {
+  "level": 3,
+  "name": "컴퓨터수리비",
+  "value": 206.85
+ },
+ {
+  "level": 3,
+  "name": "휴대용멀티미디어기기",
+  "value": 149.78
+ },
+ {
+  "level": 3,
+  "name": "컴퓨터소모품",
+  "value": 127.46
+ },
+ {
+  "level": 3,
+  "name": "저장장치",
+  "value": 211.8
+ },
+ {
+  "level": 1,
+  "name": "09.2 기타 오락 및 문화용 주요 내구재",
+  "value": 112.49
+ },
+ {
+  "level": 2,
+  "name": "기타 오락 및 문화용 주요 내구재",
+  "value": 112.49
+ },
+ {
+  "level": 3,
+  "name": "악기",
+  "value": 107.69
+ },
+ {
+  "level": 3,
+  "name": "헬스기구",
+  "value": 112.99
+ },
+ {
+  "level": 1,
+  "name": "09.3 기타 오락용품, 조경용품 및 애완동물",
+  "value": 113.76
+ },
+ {
+  "level": 2,
+  "name": "기타 오락용품, 조경용품 및 애완동물",
+  "value": 113.76
+ },
+ {
+  "level": 3,
+  "name": "장난감",
+  "value": 101.52
+ },
+ {
+  "level": 3,
+  "name": "레저용품",
+  "value": 113.03
+ },
+ {
+  "level": 3,
+  "name": "운동용품",
+  "value": 105.06
+ },
+ {
+  "level": 3,
+  "name": "화초",
+  "value": 137.66
+ },
+ {
+  "level": 3,
+  "name": "원예용품",
+  "value": 121.22
+ },
+ {
+  "level": 3,
+  "name": "반려동물용품",
+  "value": 123.88
+ },
+ {
+  "level": 3,
+  "name": "반려동물관리비",
+  "value": 115.36
+ },
+ {
+  "level": 1,
+  "name": "09.4 오락 및 문화 서비스",
+  "value": 113.18
+ },
+ {
+  "level": 2,
+  "name": "오락 및 스포츠 서비스",
+  "value": 116.03
+ },
+ {
+  "level": 3,
+  "name": "수영장이용료",
+  "value": 114.14
+ },
+ {
+  "level": 3,
+  "name": "볼링장이용료",
+  "value": 109.84
+ },
+ {
+  "level": 3,
+  "name": "헬스클럽이용료",
+  "value": 108.79
+ },
+ {
+  "level": 3,
+  "name": "골프연습장이용료",
+  "value": 103.74
+ },
+ {
+  "level": 3,
+  "name": "골프장이용료",
+  "value": 119.78
+ },
+ {
+  "level": 3,
+  "name": "당구장이용료",
+  "value": 109.05
+ },
+ {
+  "level": 3,
+  "name": "노래방이용료",
+  "value": 123.63
+ },
+ {
+  "level": 3,
+  "name": "PC방이용료",
+  "value": 116.11
+ },
+ {
+  "level": 3,
+  "name": "놀이시설이용료",
+  "value": 129.41
+ },
+ {
+  "level": 3,
+  "name": "운동경기관람료",
+  "value": 133.35
+ },
+ {
+  "level": 2,
+  "name": "문화 서비스",
+  "value": 111.42
+ },
+ {
+  "level": 3,
+  "name": "영화관람료",
+  "value": 128.81
+ },
+ {
+  "level": 3,
+  "name": "공연예술관람료",
+  "value": 115.97
+ },
+ {
+  "level": 3,
+  "name": "관람시설이용료",
+  "value": 111.64
+ },
+ {
+  "level": 3,
+  "name": "독서실비",
+  "value": 98.72
+ },
+ {
+  "level": 3,
+  "name": "문화강습료",
+  "value": 117.32
+ },
+ {
+  "level": 3,
+  "name": "온라인콘텐츠이용료",
+  "value": 111.47
+ },
+ {
+  "level": 3,
+  "name": "방송수신료",
+  "value": 100.59
+ },
+ {
+  "level": 3,
+  "name": "사진서비스료",
+  "value": 126.13
+ },
+ {
+  "level": 1,
+  "name": "09.5 신문, 서적 및 문방구",
+  "value": 115.77
+ },
+ {
+  "level": 2,
+  "name": "서적",
+  "value": 113.57
+ },
+ {
+  "level": 3,
+  "name": "유아용학습교재",
+  "value": 115.46
+ },
+ {
+  "level": 3,
+  "name": "초등학교학습서",
+  "value": 112.41
+ },
+ {
+  "level": 3,
+  "name": "중학교학습서",
+  "value": 119.77
+ },
+ {
+  "level": 3,
+  "name": "고등학교학습서",
+  "value": 139.9
+ },
+ {
+  "level": 3,
+  "name": "대학교재",
+  "value": 103.13
+ },
+ {
+  "level": 3,
+  "name": "서적",
+  "value": 102.59
+ },
+ {
+  "level": 2,
+  "name": "신문 및 정기 간행물",
+  "value": 120.37
+ },
+ {
+  "level": 3,
+  "name": "신문",
+  "value": 120.37
+ },
+ {
+  "level": 2,
+  "name": "문방구",
+  "value": 122.29
+ },
+ {
+  "level": 3,
+  "name": "종이문구",
+  "value": 125.31
+ },
+ {
+  "level": 3,
+  "name": "기타문구",
+  "value": 131.05
+ },
+ {
+  "level": 3,
+  "name": "필기구",
+  "value": 118.11
+ },
+ {
+  "level": 3,
+  "name": "회화용구",
+  "value": 118.85
+ },
+ {
+  "level": 1,
+  "name": "09.6 단체여행",
+  "value": 136.69
+ },
+ {
+  "level": 2,
+  "name": "단체여행",
+  "value": 136.69
+ },
+ {
+  "level": 3,
+  "name": "국내단체여행비",
+  "value": 138.29
+ },
+ {
+  "level": 3,
+  "name": "해외단체여행비",
+  "value": 130.06
+ },
+ {
+  "level": 0,
+  "name": "10 교육",
+  "value": 110.31
+ },
+ {
+  "level": 1,
+  "name": "10.1 유치원 및 초등교육",
+  "value": 39.71
+ },
+ {
+  "level": 2,
+  "name": "유치원 및 초등교육",
+  "value": 39.71
+ },
+ {
+  "level": 3,
+  "name": "유치원납입금",
+  "value": 39.71
+ },
+ {
+  "level": 1,
+  "name": "10.3 고등교육",
+  "value": 107.42
+ },
+ {
+  "level": 2,
+  "name": "고등교육",
+  "value": 107.42
+ },
+ {
+  "level": 3,
+  "name": "전문대학납입금",
+  "value": 108.68
+ },
+ {
+  "level": 3,
+  "name": "국공립대학교납입금",
+  "value": 101.67
+ },
+ {
+  "level": 3,
+  "name": "사립대학교납입금",
+  "value": 107.92
+ },
+ {
+  "level": 3,
+  "name": "국공립대학원납입금",
+  "value": 107.95
+ },
+ {
+  "level": 3,
+  "name": "사립대학원납입금",
+  "value": 108.87
+ },
+ {
+  "level": 1,
+  "name": "10.4 기타교육",
+  "value": 113.96
+ },
+ {
+  "level": 2,
+  "name": "학원 및 보습교육",
+  "value": 114.32
+ },
+ {
+  "level": 3,
+  "name": "초등학생학원비",
+  "value": 112.63
+ },
+ {
+  "level": 3,
+  "name": "중학생학원비",
+  "value": 111.92
+ },
+ {
+  "level": 3,
+  "name": "고등학생학원비",
+  "value": 109.54
+ },
+ {
+  "level": 3,
+  "name": "음악학원비",
+  "value": 120.3
+ },
+ {
+  "level": 3,
+  "name": "미술학원비",
+  "value": 121.21
+ },
+ {
+  "level": 3,
+  "name": "운동학원비",
+  "value": 124.96
+ },
+ {
+  "level": 3,
+  "name": "전산학원비",
+  "value": 115.25
+ },
+ {
+  "level": 3,
+  "name": "가정학습지",
+  "value": 124.33
+ },
+ {
+  "level": 3,
+  "name": "이러닝이용료",
+  "value": 115.57
+ },
+ {
+  "level": 3,
+  "name": "학교보충교육비",
+  "value": 106.16
+ },
+ {
+  "level": 3,
+  "name": "기타학원비",
+  "value": 109.09
+ },
+ {
+  "level": 2,
+  "name": "성인학원 및 기타교육",
+  "value": 110.34
+ },
+ {
+  "level": 3,
+  "name": "취업학원비",
+  "value": 108.69
+ },
+ {
+  "level": 3,
+  "name": "외국어학원비",
+  "value": 115.92
+ },
+ {
+  "level": 3,
+  "name": "운동강습료",
+  "value": 110.39
+ },
+ {
+  "level": 0,
+  "name": "11 음식 및 숙박",
+  "value": 129.03
+ },
+ {
+  "level": 1,
+  "name": "11.1 음식 서비스",
+  "value": 128.5
+ },
+ {
+  "level": 2,
+  "name": "음식 서비스",
+  "value": 128.5
+ },
+ {
+  "level": 3,
+  "name": "김치찌개백반",
+  "value": 131.51
+ },
+ {
+  "level": 3,
+  "name": "된장찌개백반",
+  "value": 130.37
+ },
+ {
+  "level": 3,
+  "name": "비빔밥",
+  "value": 133.55
+ },
+ {
+  "level": 3,
+  "name": "설렁탕",
+  "value": 131.42
+ },
+ {
+  "level": 3,
+  "name": "갈비탕",
+  "value": 137.51
+ },
+ {
+  "level": 3,
+  "name": "삼계탕",
+  "value": 126.94
+ },
+ {
+  "level": 3,
+  "name": "해물찜",
+  "value": 118.3
+ },
+ {
+  "level": 3,
+  "name": "해장국",
+  "value": 134.95
+ },
+ {
+  "level": 3,
+  "name": "불고기",
+  "value": 125.69
+ },
+ {
+  "level": 3,
+  "name": "쇠고기(외식)",
+  "value": 122.66
+ },
+ {
+  "level": 3,
+  "name": "돼지갈비(외식)",
+  "value": 128.0
+ },
+ {
+  "level": 3,
+  "name": "삼겹살(외식)",
+  "value": 126.09
+ },
+ {
+  "level": 3,
+  "name": "오리고기(외식)",
+  "value": 126.5
+ },
+ {
+  "level": 3,
+  "name": "냉면",
+  "value": 132.37
+ },
+ {
+  "level": 3,
+  "name": "칼국수",
+  "value": 133.95
+ },
+ {
+  "level": 3,
+  "name": "죽(외식)",
+  "value": 127.78
+ },
+ {
+  "level": 3,
+  "name": "생선초밥",
+  "value": 120.65
+ },
+ {
+  "level": 3,
+  "name": "생선회(외식)",
+  "value": 139.05
+ },
+ {
+  "level": 3,
+  "name": "자장면",
+  "value": 138.53
+ },
+ {
+  "level": 3,
+  "name": "짬뽕",
+  "value": 134.77
+ },
+ {
+  "level": 3,
+  "name": "탕수육",
+  "value": 124.83
+ },
+ {
+  "level": 3,
+  "name": "볶음밥",
+  "value": 133.32
+ },
+ {
+  "level": 3,
+  "name": "돈가스",
+  "value": 132.89
+ },
+ {
+  "level": 3,
+  "name": "스테이크",
+  "value": 121.94
+ },
+ {
+  "level": 3,
+  "name": "스파게티",
+  "value": 121.57
+ },
+ {
+  "level": 3,
+  "name": "라면(외식)",
+  "value": 136.6
+ },
+ {
+  "level": 3,
+  "name": "김밥",
+  "value": 145.39
+ },
+ {
+  "level": 3,
+  "name": "떡볶이",
+  "value": 140.61
+ },
+ {
+  "level": 3,
+  "name": "치킨",
+  "value": 132.22
+ },
+ {
+  "level": 3,
+  "name": "햄버거",
+  "value": 141.81
+ },
+ {
+  "level": 3,
+  "name": "피자",
+  "value": 119.68
+ },
+ {
+  "level": 3,
+  "name": "쌀국수",
+  "value": 130.7
+ },
+ {
+  "level": 3,
+  "name": "커피(외식)",
+  "value": 111.58
+ },
+ {
+  "level": 3,
+  "name": "기타음료(외식)",
+  "value": 107.43
+ },
+ {
+  "level": 3,
+  "name": "소주(외식)",
+  "value": 118.57
+ },
+ {
+  "level": 3,
+  "name": "맥주(외식)",
+  "value": 120.83
+ },
+ {
+  "level": 3,
+  "name": "막걸리(외식)",
+  "value": 120.63
+ },
+ {
+  "level": 3,
+  "name": "구내식당식사비",
+  "value": 126.79
+ },
+ {
+  "level": 3,
+  "name": "도시락",
+  "value": 145.69
+ },
+ {
+  "level": 1,
+  "name": "11.2 숙박 서비스",
+  "value": 137.83
+ },
+ {
+  "level": 2,
+  "name": "숙박 서비스",
+  "value": 137.83
+ },
+ {
+  "level": 3,
+  "name": "호텔숙박료",
+  "value": 155.9
+ },
+ {
+  "level": 3,
+  "name": "여관숙박료",
+  "value": 110.69
+ },
+ {
+  "level": 3,
+  "name": "콘도이용료",
+  "value": 172.95
+ },
+ {
+  "level": 3,
+  "name": "학교기숙사비",
+  "value": 118.91
+ },
+ {
+  "level": 3,
+  "name": "휴양시설이용료",
+  "value": 132.23
+ },
+ {
+  "level": 0,
+  "name": "12 기타 상품 및 서비스",
+  "value": 130.45
+ },
+ {
+  "level": 1,
+  "name": "12.1 미용용품 및 미용 서비스",
+  "value": 122.15
+ },
+ {
+  "level": 2,
+  "name": "이미용 및 미용시설",
+  "value": 123.3
+ },
+ {
+  "level": 3,
+  "name": "목욕료",
+  "value": 138.83
+ },
+ {
+  "level": 3,
+  "name": "찜질방이용료",
+  "value": 135.78
+ },
+ {
+  "level": 3,
+  "name": "이발료",
+  "value": 120.25
+ },
+ {
+  "level": 3,
+  "name": "미용료",
+  "value": 121.32
+ },
+ {
+  "level": 3,
+  "name": "뷰티미용료",
+  "value": 122.25
+ },
+ {
+  "level": 2,
+  "name": "개인용 전기용품 및 미용용품",
+  "value": 121.16
+ },
+ {
+  "level": 3,
+  "name": "면도기",
+  "value": 124.22
+ },
+ {
+  "level": 3,
+  "name": "헤어드라이어",
+  "value": 121.65
+ },
+ {
+  "level": 3,
+  "name": "칫솔",
+  "value": 99.88
+ },
+ {
+  "level": 3,
+  "name": "치약",
+  "value": 113.57
+ },
+ {
+  "level": 3,
+  "name": "비누",
+  "value": 135.45
+ },
+ {
+  "level": 3,
+  "name": "샴푸",
+  "value": 146.03
+ },
+ {
+  "level": 3,
+  "name": "바디워시",
+  "value": 122.6
+ },
+ {
+  "level": 3,
+  "name": "화장지",
+  "value": 124.67
+ },
+ {
+  "level": 3,
+  "name": "기초화장품",
+  "value": 108.72
+ },
+ {
+  "level": 3,
+  "name": "기능성화장품",
+  "value": 129.75
+ },
+ {
+  "level": 3,
+  "name": "색조화장품",
+  "value": 108.23
+ },
+ {
+  "level": 3,
+  "name": "모발염색약",
+  "value": 132.59
+ },
+ {
+  "level": 3,
+  "name": "구강세정제",
+  "value": 121.07
+ },
+ {
+  "level": 1,
+  "name": "12.3 기타 개인용품",
+  "value": 116.53
+ },
+ {
+  "level": 2,
+  "name": "기타 개인용품",
+  "value": 116.53
+ },
+ {
+  "level": 3,
+  "name": "손목시계",
+  "value": 145.45
+ },
+ {
+  "level": 3,
+  "name": "장신구",
+  "value": 120.67
+ },
+ {
+  "level": 3,
+  "name": "가방",
+  "value": 110.94
+ },
+ {
+  "level": 3,
+  "name": "핸드백",
+  "value": 115.44
+ },
+ {
+  "level": 3,
+  "name": "우산",
+  "value": 107.4
+ },
+ {
+  "level": 3,
+  "name": "유모차",
+  "value": 105.79
+ },
+ {
+  "level": 3,
+  "name": "선글라스",
+  "value": 103.16
+ },
+ {
+  "level": 3,
+  "name": "지갑",
+  "value": 122.69
+ },
+ {
+  "level": 1,
+  "name": "12.4~7 기타서비스",
+  "value": 146.06
+ },
+ {
+  "level": 2,
+  "name": "기타서비스",
+  "value": 146.06
+ },
+ {
+  "level": 3,
+  "name": "산후조리원이용료",
+  "value": 128.46
+ },
+ {
+  "level": 3,
+  "name": "보육시설이용료",
+  "value": 69.2
+ },
+ {
+  "level": 3,
+  "name": "요양시설이용료",
+  "value": 125.15
+ },
+ {
+  "level": 3,
+  "name": "보험서비스료",
+  "value": 215.81
+ },
+ {
+  "level": 3,
+  "name": "자동차보험료",
+  "value": 94.93
+ },
+ {
+  "level": 3,
+  "name": "금융수수료",
+  "value": 100.0
+ },
+ {
+  "level": 3,
+  "name": "부동산중개수수료",
+  "value": 92.28
+ },
+ {
+  "level": 3,
+  "name": "행정수수료",
+  "value": 99.56
+ },
+ {
+  "level": 3,
+  "name": "대입전형료",
+  "value": 101.74
+ },
+ {
+  "level": 3,
+  "name": "시험응시료",
+  "value": 116.55
+ },
+ {
+  "level": 3,
+  "name": "장례비",
+  "value": 111.46
+ }
+]
