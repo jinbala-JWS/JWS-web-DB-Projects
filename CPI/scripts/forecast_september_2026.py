@@ -1,0 +1,238 @@
+"""
+2026년 9월 CPI 예측 — forecast_august_2026.py와 동일한 바텀업/탑다운 파이프라인에
+게이트 편향보정(apply_bias_correction_august.py)과 하이브리드 결합
+(hybrid_category_model.py)까지 한 스크립트에서 순서대로 실행한다.
+
+8월과의 핵심 차이:
+1) 학습 데이터가 2026-08까지 확장됨(update_panels_with_august_actual.py로 실제
+   8월 발표치를 패널에 반영 완료).
+2) Tier D 오피넷 회귀변수는 9월 MTD 데이터가 4일치(09/01~09/06)뿐이라 8월(24일치)보다
+   훨씬 얇다 - raw_opinet_gasoline_diesel_kerosene.tsv/raw_opinet_auto_lpg.tsv에 추가.
+   취사용LPG·부탄가스는 9월 MTD 자체가 없어(월간 확정치라 월초에나 나옴) 회귀변수
+   없이 드리프트 추정으로 자동 폴백됨.
+3) 카테고리/총지수는 하이브리드(04·06·09만 탑다운, 나머지 바텀업)를 공식 예측으로 채택.
+4) 전세·월세는 이번엔 R-ONE 주간 데이터 갱신 없이 자체 ETS 그대로 사용(9월 R-ONE
+   주간치가 아직 1주 안팎이라 이번 회차에는 보류 - 데이터 부족 섹션에 기록).
+"""
+import warnings
+import numpy as np
+import pandas as pd
+from pathlib import Path
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
+from hybrid_category_model import bottomup_to_category, combine_hybrid, hybrid_total
+
+warnings.filterwarnings("ignore")
+
+CPI_DIR = Path(__file__).resolve().parent.parent
+SCRIPTS = CPI_DIR / "scripts"
+TARGET = "2026-09"
+
+FIXED_SEASON_NAMES = {
+    "복숭아", "포도", "감", "귤", "오렌지", "참외", "수박", "딸기", "체리", "열무", "굴",
+}
+ANNUAL_STEP_NAMES = {
+    "외래진료비", "한방진료비", "약국조제료", "치과진료비", "입원진료비",
+    "전문대학납입금", "국공립대학교납입금", "사립대학교납입금",
+    "국공립대학원납입금", "사립대학원납입금",
+}
+OPINET_REGRESSOR = {
+    "휘발유": ("raw_opinet_gasoline_diesel_kerosene.tsv", "보통휘발유"),
+    "경유": ("raw_opinet_gasoline_diesel_kerosene.tsv", "자동차용경유"),
+    "등유": ("raw_opinet_gasoline_diesel_kerosene.tsv", "실내등유"),
+    "자동차용LPG": ("raw_opinet_auto_lpg.tsv", "자동차부탄(원/L)"),
+    "취사용LPG": ("raw_opinet_household_lpg.tsv", "일반프로판(원/kg)"),
+}
+
+TRAILING_MONTHS = ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"]
+SHRINKAGE = 0.6
+CONSISTENCY_MIN = 0.8
+STD_MAX_PCT = 2.0
+
+
+def load_opinet_series(fname, col):
+    df = pd.read_csv(SCRIPTS / fname, sep="\t", dtype=str)
+    df = df.rename(columns={df.columns[0]: "기간"})
+    if "년" in str(df["기간"].iloc[0]):
+        extracted = df["기간"].str.extract(r"(\d{4})년(\d{2})월")
+        df["기간"] = extracted[0] + "-" + extracted[1]
+    else:
+        df["기간"] = df["기간"].str.extract(r"(\d{4}-\d{2})")[0]
+    df[col] = pd.to_numeric(df[col].astype(str).str.replace(",", "", regex=False).str.strip(), errors="coerce")
+    return df.set_index("기간")[col]
+
+
+def ets_forecast(hist: pd.Series, is_seasonal: bool) -> float:
+    s = hist.dropna()
+    if len(s) < 24:
+        if len(s) >= 2:
+            drift = s.diff().dropna().tail(12).mean()
+            return float(s.iloc[-1] + (drift if pd.notna(drift) else 0))
+        return float(s.iloc[-1]) if len(s) else np.nan
+    try:
+        if is_seasonal and len(s) >= 36:
+            model = ExponentialSmoothing(s.values, trend="add", damped_trend=True,
+                                          seasonal="add", seasonal_periods=12,
+                                          initialization_method="estimated")
+        else:
+            model = ExponentialSmoothing(s.values, trend="add", damped_trend=True,
+                                          seasonal=None, initialization_method="estimated")
+        fit = model.fit(optimized=True)
+        return float(fit.forecast(1)[0])
+    except Exception:
+        drift = s.diff().dropna().tail(12).mean()
+        return float(s.iloc[-1] + (drift if pd.notna(drift) else 0))
+
+
+def regression_forecast(cpi_hist: pd.Series, ext_hist: pd.Series, ext_target_value: float) -> float:
+    common = sorted(set(cpi_hist.dropna().index) & set(ext_hist.dropna().index))
+    if len(common) < 24 or pd.isna(ext_target_value):
+        drift = cpi_hist.dropna().diff().dropna().tail(12).mean()
+        return float(cpi_hist.dropna().iloc[-1] + (drift if pd.notna(drift) else 0))
+    y = cpi_hist[common].astype(float).values
+    x = ext_hist[common].astype(float).values
+    b, a = np.polyfit(x, y, 1)
+    return float(a + b * ext_target_value)
+
+
+def bottom_up():
+    panel = pd.read_csv(SCRIPTS / "all_tiers_monthly_panel.csv")
+    month_cols_sorted = sorted([c for c in panel.columns if c[:2] in ("19", "20")])
+    train_cols = [c for c in month_cols_sorted if c < TARGET]
+
+    opinet_cache = {name: load_opinet_series(f, c) for name, (f, c) in OPINET_REGRESSOR.items()}
+
+    rows = []
+    for _, row in panel.iterrows():
+        item, tier, weight = row["품목명"], row["Tier"], row["가중치"]
+        full_series = pd.Series(row[month_cols_sorted].astype(float).values,
+                                 index=month_cols_sorted).interpolate(limit_area="inside")
+        cpi_hist = full_series[train_cols]
+
+        if item in OPINET_REGRESSOR:
+            ext_series = opinet_cache[item]
+            ext_hist = ext_series[ext_series.index.isin(train_cols)]
+            ext_target = ext_series.get(TARGET, np.nan)
+            pred = regression_forecast(cpi_hist, ext_hist, ext_target)
+            model_used = "회귀(오피넷 9월실측)" if pd.notna(ext_target) else "회귀변수없음->드리프트"
+        else:
+            if tier == "B":
+                is_seasonal, restrict = True, item in FIXED_SEASON_NAMES
+            elif tier == "C" and item in ANNUAL_STEP_NAMES:
+                is_seasonal, restrict = True, False
+            else:
+                is_seasonal, restrict = False, False
+            hist = cpi_hist[cpi_hist.index >= "2017-01"] if restrict else cpi_hist
+            pred = ets_forecast(hist, is_seasonal)
+            model_used = "계절ETS" if is_seasonal else "비계절ETS"
+
+        rows.append({"품목코드": row["품목코드"], "품목명": item, "Tier": tier,
+                      "가중치": weight, "모델": model_used, f"pred_{TARGET}": pred})
+
+    out = pd.DataFrame(rows)
+    out.to_csv(SCRIPTS / "september2026_bottomup_items.csv", index=False, encoding="utf-8-sig")
+
+    w = out["가중치"].values
+    vals = out[f"pred_{TARGET}"].astype(float).values
+    arith = np.average(vals, weights=w)
+    geom = np.exp(np.average(np.log(vals), weights=w))
+    blended = 0.5 * arith + 0.5 * geom
+    return out, blended
+
+
+def apply_bias_correction(bottomup_items: pd.DataFrame) -> pd.DataFrame:
+    """항목별_편향보정_결과.md에서 검증된 게이트 기반 트레일링 편향보정 (그대로 재사용)."""
+    backtest = pd.read_csv(SCRIPTS / "all_tiers_forecast_vs_actual.csv")
+    df = bottomup_items.copy()
+
+    corrections = {}
+    for _, row in backtest.iterrows():
+        item = row["품목명"]
+        lvl = [row[f"pred_{m}"] - row[f"actual_{m}"] for m in TRAILING_MONTHS]
+        pct = [(row[f"pred_{m}"] - row[f"actual_{m}"]) / row[f"actual_{m}"] * 100 for m in TRAILING_MONTHS]
+        mean_pct = np.mean(pct)
+        consistency = np.mean([np.sign(p) == np.sign(mean_pct) for p in pct])
+        std_pct = np.std(pct)
+        if consistency >= CONSISTENCY_MIN and std_pct <= STD_MAX_PCT and abs(mean_pct) >= 0.05:
+            corrections[item] = np.mean(lvl)
+        else:
+            corrections[item] = 0.0
+
+    pred_col = f"pred_{TARGET}"
+    df["보정치(레벨)"] = df["품목명"].map(corrections).fillna(0.0)
+    df[f"보정후_pred_{TARGET}"] = df[pred_col] - SHRINKAGE * df["보정치(레벨)"]
+    df.to_csv(SCRIPTS / "september2026_bottomup_items_corrected.csv", index=False, encoding="utf-8-sig")
+
+    n_corrected = (df["보정치(레벨)"] != 0).sum()
+    print(f"편향보정 적용 품목수: {n_corrected} / {len(df)} (트레일링 {TRAILING_MONTHS[0]}~{TRAILING_MONTHS[-1]}, "
+          f"7월까지의 백테스트 기준 - 8월 신규 백테스트 포인트는 미반영, 다음 개선과제)")
+    return df
+
+
+def top_down():
+    official = pd.read_csv(SCRIPTS / "cpi_official_monthly_wide.csv").drop_duplicates(subset="품목", keep="first")
+    month_cols_sorted = sorted([c for c in official.columns if c[:2] in ("19", "20")])
+    train_cols = [c for c in month_cols_sorted if c < TARGET]
+
+    total_row = official[official["품목"] == "0 총지수"].iloc[0]
+    major_rows = official[official["품목"].str.match(r"^\d{2} ")]
+    sub_rows = official[official["품목"].str.match(r"^\d{2}\.\d ")]
+
+    results = []
+    for label, r in [("총지수", total_row)] + list(zip(major_rows["품목"], major_rows.to_dict("records"))) + \
+                     list(zip(sub_rows["품목"], sub_rows.to_dict("records"))):
+        series = pd.Series({c: r[c] for c in month_cols_sorted}).astype(float)
+        hist = series[train_cols].dropna()
+        pred = ets_forecast(hist, is_seasonal=True)
+        last_actual = hist.iloc[-1] if len(hist) else np.nan
+        results.append({
+            "분류": label, "2026-08(실제)": last_actual, f"{TARGET}(예측)": pred,
+            "전월대비%": (pred - last_actual) / last_actual * 100 if last_actual else np.nan,
+        })
+
+    out = pd.DataFrame(results)
+    out.to_csv(SCRIPTS / "september2026_topdown_categories.csv", index=False, encoding="utf-8-sig")
+    return out
+
+
+def main():
+    print(f"=== 9월 CPI 예측 (TARGET={TARGET}) ===\n")
+
+    print("[1/4] 바텀업(458개 품목)")
+    items, blended_raw = bottom_up()
+    print(f"  보정 전 바텀업 총지수: {blended_raw:.3f}")
+
+    print("\n[2/4] 게이트 편향보정")
+    items_corrected = apply_bias_correction(items)
+    w = items_corrected["가중치"].values
+    vals = items_corrected[f"보정후_pred_{TARGET}"].values
+    arith = np.average(vals, weights=w)
+    geom = np.exp(np.average(np.log(vals), weights=w))
+    blended_corrected = 0.5 * arith + 0.5 * geom
+    print(f"  보정 후 바텀업 총지수: {blended_corrected:.3f}")
+
+    print("\n[3/4] 탑다운(대분류12 + 소분류38 + 총지수)")
+    cat_df = top_down()
+    major = cat_df[cat_df["분류"].str.match(r"^\d\d ")]
+    print(major[["분류", "2026-08(실제)", f"{TARGET}(예측)", "전월대비%"]].round(3).to_string(index=False))
+
+    print("\n[4/4] 하이브리드 결합 (04·06·09만 탑다운, 나머지 바텀업)")
+    bu_cat = bottomup_to_category(items_corrected, pred_col=f"보정후_pred_{TARGET}")
+    td_major = major.rename(columns={f"{TARGET}(예측)": "탑다운예측"})[["분류", "탑다운예측"]]
+    hybrid = combine_hybrid(bu_cat, td_major)
+    hybrid = hybrid.sort_values("분류")
+    hybrid.to_csv(SCRIPTS / "september2026_hybrid_category.csv", index=False, encoding="utf-8-sig")
+    print(hybrid[["분류", "바텀업예측", "탑다운예측", "채택방식", "최종예측"]].round(3).to_string(index=False))
+
+    total = hybrid_total(hybrid)
+    total_row = cat_df[cat_df["분류"] == "총지수"].iloc[0]
+    print(f"\n[총지수 예측 비교]")
+    print(f"  바텀업(458개 직접블렌드, 편향보정 후): {blended_corrected:.3f}")
+    print(f"  탑다운(총지수 자체 히스토리 ETS):        {total_row[f'{TARGET}(예측)']:.3f}")
+    print(f"  하이브리드(카테고리별 결합 후 재구성):     {total:.3f}  <- 공식 채택값")
+    aug_actual = total_row["2026-08(실제)"]
+    print(f"  (8월 실제: {aug_actual:.2f}, 전월대비 {(total-aug_actual)/aug_actual*100:+.3f}%)")
+
+
+if __name__ == "__main__":
+    main()
