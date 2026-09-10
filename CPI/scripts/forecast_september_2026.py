@@ -36,6 +36,12 @@ ANNUAL_STEP_NAMES = {
     "전문대학납입금", "국공립대학교납입금", "사립대학교납입금",
     "국공립대학원납입금", "사립대학원납입금",
 }
+# 2026-09-10 검증: 전기료는 요금표 자체는 2025~2026 내내 동결(한전 연료비조정단가
+# 발표 - 가정용 13분기 연속 동결)이지만, 여름철 누진제 완화 특례가 매년 8월까지만
+# 적용되고 9월에 정상 구간으로 복귀하는 효과로 8월->9월에 매년 +12~21% 계단식
+# 상승이 반복된다(2018~2025년 8개년 전부 확인). 비계절ETS는 이 패턴을 놓쳐 24개월
+# 백테스트 MAPE 1.91% - 계절ETS로 바꾸니 0.58%로 개선(검증 후 적용, 되돌리지 않음).
+ANNUAL_SEASONAL_TIER_D = {"전기료"}
 OPINET_REGRESSOR = {
     "휘발유": ("raw_opinet_gasoline_diesel_kerosene.tsv", "보통휘발유"),
     "경유": ("raw_opinet_gasoline_diesel_kerosene.tsv", "자동차용경유"),
@@ -119,6 +125,8 @@ def bottom_up():
             if tier == "B":
                 is_seasonal, restrict = True, item in FIXED_SEASON_NAMES
             elif tier == "C" and item in ANNUAL_STEP_NAMES:
+                is_seasonal, restrict = True, False
+            elif item in ANNUAL_SEASONAL_TIER_D:
                 is_seasonal, restrict = True, False
             else:
                 is_seasonal, restrict = False, False
