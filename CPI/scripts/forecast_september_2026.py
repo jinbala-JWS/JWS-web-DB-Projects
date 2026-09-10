@@ -76,6 +76,17 @@ OPINET_REGRESSOR = {
     "취사용LPG": ("raw_opinet_household_lpg.tsv", "일반프로판(원/kg)"),
 }
 
+# 2026-09-10 확인: 휴대전화료 2025-08 실측치(80.52)는 SKT 유심해킹 보상으로 전체
+# 가입자 통신요금을 한 달만 50% 자동할인한 결과(뉴스로 원인 확인됨 -
+# 뉴스기반_요금개정이력.md §9 참조, 2025-07=101.94->2025-08=80.52->2025-09=101.98로
+# 다음달 즉시 원복). 요금표 자체의 변화가 아니라 일회성 이벤트라 이 한 점이 학습
+# 데이터에 그대로 남아있으면 ETS의 추세/레벨 추정이 왜곡된다 - 예측용 학습 데이터
+# 에서만 이 달을 결측 처리해 앞뒤 실측치로 선형보간한다(원본 패널/백테스트 실적
+# 데이터는 건드리지 않음 - 실제로 있었던 일이므로 과거 검증용 실측치는 그대로 둔다).
+ANOMALY_MONTHS = {
+    "휴대전화료": ["2025-08"],
+}
+
 TRAILING_MONTHS = ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"]
 SHRINKAGE = 0.6
 CONSISTENCY_MIN = 0.8
@@ -168,8 +179,11 @@ def bottom_up():
     rows = []
     for _, row in panel.iterrows():
         item, tier, weight = row["품목명"], row["Tier"], row["가중치"]
-        full_series = pd.Series(row[month_cols_sorted].astype(float).values,
-                                 index=month_cols_sorted).interpolate(limit_area="inside")
+        raw_series = pd.Series(row[month_cols_sorted].astype(float).values, index=month_cols_sorted)
+        for anomaly_month in ANOMALY_MONTHS.get(item, []):
+            if anomaly_month in raw_series.index:
+                raw_series[anomaly_month] = np.nan  # 학습용으로만 결측 처리 -> 아래서 선형보간
+        full_series = raw_series.interpolate(limit_area="inside")
         cpi_hist = full_series[train_cols]
 
         if item in OPINET_REGRESSOR:

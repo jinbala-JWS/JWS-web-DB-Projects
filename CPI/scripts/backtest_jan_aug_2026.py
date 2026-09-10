@@ -32,8 +32,11 @@ def bottom_up_for_month(panel, month_cols_sorted, opinet_cache, item_selection, 
     rows = []
     for _, row in panel.iterrows():
         item, tier, weight = row["품목명"], row["Tier"], row["가중치"]
-        full_series = pd.Series(row[month_cols_sorted].astype(float).values,
-                                 index=month_cols_sorted).interpolate(limit_area="inside")
+        raw_series = pd.Series(row[month_cols_sorted].astype(float).values, index=month_cols_sorted)
+        for anomaly_month in fs.ANOMALY_MONTHS.get(item, []):
+            if anomaly_month in raw_series.index:
+                raw_series[anomaly_month] = np.nan  # 학습용으로만 결측 처리 -> 선형보간(실적 데이터는 그대로)
+        full_series = raw_series.interpolate(limit_area="inside")
         cpi_hist = full_series[train_cols]
 
         if item in fs.OPINET_REGRESSOR:
