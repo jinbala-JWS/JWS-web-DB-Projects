@@ -116,6 +116,23 @@ def ets_forecast(hist: pd.Series, is_seasonal: bool) -> float:
         return float(s.iloc[-1] + (drift if pd.notna(drift) else 0))
 
 
+def step_weighted_forecast(hist: pd.Series, target_month_num: int, weights=(5, 4, 3, 2, 1)) -> float:
+    """예측 대상월과 같은 '달'로의 과거 전월대비 변동만 모아 최근 N회를 가중평균
+    (최신일수록 가중치 큼: 5,4,3,2,1)해 그 달의 기대 변동률로 쓴다. 다른 달로의
+    전이는 원래 변동이 거의 없으니 자연히 0%에 가깝게 나온다 - "그 달에만 계단식
+    으로 움직이고 나머진 안 움직인다"는 패턴을 정면으로 모델링한 나이브 계절 기법.
+    select_item_model.py의 24개월 백테스트로 검증된 품목에만 적용한다."""
+    s = hist.dropna()
+    pct = s.pct_change().dropna() * 100
+    same_month = pct[pd.Index(pct.index).map(lambda x: int(x[5:7])) == target_month_num]
+    if len(same_month) == 0:
+        return float(s.iloc[-1])
+    recent = same_month.tail(len(weights))
+    w = np.array(weights[-len(recent):], dtype=float)
+    avg_pct = float(np.average(recent.values, weights=w))
+    return float(s.iloc[-1] * (1 + avg_pct / 100))
+
+
 def regression_forecast(cpi_hist: pd.Series, ext_hist: pd.Series, ext_target_value: float) -> float:
     common = sorted(set(cpi_hist.dropna().index) & set(ext_hist.dropna().index))
     if len(common) < 24 or pd.isna(ext_target_value):
@@ -127,12 +144,26 @@ def regression_forecast(cpi_hist: pd.Series, ext_hist: pd.Series, ext_target_val
     return float(a + b * ext_target_value)
 
 
+def load_item_model_selection() -> dict:
+    """select_item_model.py의 24개월 백테스트 결과(item_model_selection.csv)에서
+    품목별 채택방식('계단평균'/'완전동결'/'계절ETS' - '비계절ETS'는 현행유지라 제외)을
+    읽는다. 파일이 없으면 빈 dict(전부 기존 로직 유지)."""
+    path = SCRIPTS / "item_model_selection.csv"
+    if not path.exists():
+        return {}
+    sel = pd.read_csv(path, encoding="utf-8-sig")
+    sel = sel[sel["채택방식"] != "비계절ETS"]
+    return dict(zip(sel["품목명"], sel["채택방식"]))
+
+
 def bottom_up():
     panel = pd.read_csv(SCRIPTS / "all_tiers_monthly_panel.csv")
     month_cols_sorted = sorted([c for c in panel.columns if c[:2] in ("19", "20")])
     train_cols = [c for c in month_cols_sorted if c < TARGET]
+    target_month_num = int(TARGET[5:7])
 
     opinet_cache = {name: load_opinet_series(f, c) for name, (f, c) in OPINET_REGRESSOR.items()}
+    item_selection = load_item_model_selection()
 
     rows = []
     for _, row in panel.iterrows():
@@ -147,6 +178,12 @@ def bottom_up():
             ext_target = ext_series.get(TARGET, np.nan)
             pred = regression_forecast(cpi_hist, ext_hist, ext_target)
             model_used = "회귀(오피넷 9월실측)" if pd.notna(ext_target) else "회귀변수없음->드리프트"
+        elif item_selection.get(item) == "계단평균":
+            pred = step_weighted_forecast(cpi_hist, target_month_num)
+            model_used = "계단평균(검증됨)"
+        elif item_selection.get(item) == "완전동결":
+            pred = float(cpi_hist.dropna().iloc[-1])
+            model_used = "완전동결(검증됨)"
         else:
             if tier == "B":
                 is_seasonal, restrict = True, item in FIXED_SEASON_NAMES
@@ -155,6 +192,8 @@ def bottom_up():
             elif item in ANNUAL_SEASONAL_TIER_D:
                 is_seasonal, restrict = True, False
             elif item in ANNUAL_SEASONAL_MISC:
+                is_seasonal, restrict = True, False
+            elif item_selection.get(item) == "계절ETS":
                 is_seasonal, restrict = True, False
             else:
                 is_seasonal, restrict = False, False
