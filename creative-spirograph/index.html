@@ -120,12 +120,15 @@
   const saveBtn = document.getElementById('saveBtn');
   const swatchesEl = document.getElementById('swatches');
 
-  const colors = ['#8fe3d0','#ff6a3d','#ffd166','#ef476f','#6a8dff','#c77dff','#ffffff'];
+  const colors = ['#8fe3d0','#ff6a3d','#ffd166','#ef476f','#6a8dff','#c77dff','#ffffff','__rainbow__'];
   let colorIndex = 0;
   colors.forEach((c,i) => {
     const s = document.createElement('div');
     s.className = 'swatch' + (i===0 ? ' active' : '');
-    s.style.background = c;
+    s.style.background = c === '__rainbow__'
+      ? 'conic-gradient(red, yellow, lime, cyan, blue, magenta, red)'
+      : c;
+    s.title = c === '__rainbow__' ? '무지개' : '';
     s.addEventListener('click', () => {
       colorIndex = i;
       [...swatchesEl.children].forEach(ch => ch.classList.remove('active'));
