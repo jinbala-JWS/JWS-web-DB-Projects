@@ -15,7 +15,13 @@ import forecast_september_2026 as fs
 from backtest_jan_aug_2026 import (
     bottom_up_for_month, apply_bias_correction_dynamic, top_down_for_month, blend,
 )
-from hybrid_category_model import bottomup_to_category, combine_hybrid, hybrid_total
+from hybrid_category_model import bottomup_to_category, combine_hybrid, hybrid_total, category_weights
+from residual_topdown import PULLABLE_ITEMS, residual_topdown_for_category
+
+# 전세·월세 R-ONE 1개월시차 회귀모델(9월 R-ONE 실측 0.34%/0.39% 대입) 예측치.
+# update_october_total_with_rone.py와 동일한 값 — "탑다운에서 빼내 바텀업(실측pull)으로
+# 돌리는" 항목의 예측치로 재사용한다.
+RONE_FORECAST = {"전세": 106.685, "월세": 106.340}
 
 warnings.filterwarnings("ignore")
 SCRIPTS = Path(__file__).resolve().parent
@@ -46,7 +52,27 @@ def main():
     bu_total = blend(bu["pred_corr"].values, bu["가중치"].values)
     td = top_down_for_month(official, item_col, month_cols, TARGET)
     td_total = td.loc[td["분류"] == "총지수", "탑다운예측"].iloc[0]
-    td_major = td[td["분류"].str.match(r"^\d\d ")]
+    td_major = td[td["분류"].str.match(r"^\d\d ")].copy()
+
+    # 탑다운 채택 카테고리 중 전세·월세처럼 R-ONE 실측을 끌어올 수 있는 세부항목은
+    # 바텀업(R-ONE 반영치)으로 돌리고, 나머지("remainder")만의 변동률로 탑다운한다
+    # (2026-10-20 논의 방식, residual_topdown.py).
+    panel_series = {
+        name: pd.Series(panel.loc[panel["품목명"] == name, month_cols].iloc[0].astype(float).values,
+                        index=month_cols)
+        for cat_items in PULLABLE_ITEMS.values() for name in cat_items
+    }
+    w_cat = category_weights()
+    for cat_label in PULLABLE_ITEMS:
+        res = residual_topdown_for_category(
+            cat_label, official, item_col, month_cols, TARGET, w_cat[cat_label],
+            panel_series, RONE_FORECAST, fs.ets_forecast,
+        )
+        old_val = td_major.loc[td_major["분류"] == cat_label, "탑다운예측"].iloc[0]
+        print(f"[{cat_label}] 카테고리전체탑다운 {old_val:.3f} -> remainder+R-ONE재조합 "
+              f"{res['탑다운예측']:.3f} (remainder예측 {res['remainder예측']:.3f}, "
+              f"remainder가중치 {res['remainder가중치']})")
+        td_major.loc[td_major["분류"] == cat_label, "탑다운예측"] = res["탑다운예측"]
 
     cat_sel = pd.read_csv(SCRIPTS / "category_method_selection.csv", encoding="utf-8-sig")
     hybrid = combine_hybrid(bottomup_to_category(bu, pred_col="pred_corr"), td_major,
