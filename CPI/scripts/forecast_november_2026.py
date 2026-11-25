@@ -1,15 +1,21 @@
 """
-2026년 11월 CPI 예측(상반월 시점) — 월중(11/2~11/8 오피넷 MTD 5일치 반영) 예측.
+2026년 11월 CPI 예측(20일 시점 갱신, 2026-11-25) — 오피넷 MTD를 11/2~11/24(20일)로 확장하고,
+R-ONE 10월 실측치(전세 +0.34%/월세 +0.40%, 2026-11-25 한국부동산원 API 직접 조회로 확보)를
+1개월 시차 회귀모델에 대입해 "remainder 탑다운"(residual_topdown.py)을 이번 회차부터 반영한다.
 backtest_jan_aug_2026.py의 월 파라미터화 부품을 그대로 재사용: 바텀업 458개(품목별
 자동선택·이상치보정) -> 게이트 편향보정(직전 6개월 동적) -> 탑다운 -> 하이브리드 결합.
 학습데이터는 2026-10 실적(KOSIS OpenAPI, 이미 패널에 반영됨)까지 포함.
 
-10월과의 차이: "remainder 탑다운"(전세·월세 R-ONE 대입, residual_topdown.py)은 이번 회차엔
-적용하지 않았다 — R-ONE 10월 실측치가 매월 15일경 발표되는데 이번 예측 시점(11/11)엔 아직
-안 나왔다(한국부동산원 API 직접 조회로 확인, 최근 12개월 응답이 2026-09까지만 존재).
-R-ONE 10월치가 나오면(11/15 전후) 04 카테고리에 residual_topdown 재적용 예정(20일 시점 갱신).
+상반월(11/11)과의 차이:
+1. 오피넷 MTD 5일 -> 20일(11/2~11/24)로 확장.
+2. R-ONE 10월 실측치가 발표돼(11/15 전후) rone_vs_cpi_monthly.csv에 10월 포인트를 추가해
+   재적합(n=14)했다 — 전세 slope=0.4287 intercept=-0.0093 R²=0.6284, 월세 slope=0.3155
+   intercept=0.0273 R²=0.5618. 10월 R-ONE(전세 0.34%/월세 0.40%)을 대입해 11월 전세
+   106.836 / 월세 106.503을 예측 -> "04 주택,수도,전기및연료" 카테고리에 remainder
+   탑다운(residual_topdown.py)으로 반영.
 
-사용 전 준비: (이미 완료) fetch_kosis_cpi.py 202610, append_opinet_mtd.py 2026-11
+사용 전 준비: (이미 완료) fetch_kosis_cpi.py 202610, append_opinet_mtd.py 2026-11(20일),
+R-ONE 10월 조회 후 rone_vs_cpi_monthly.csv 갱신
 """
 import warnings
 import numpy as np
@@ -21,6 +27,10 @@ from backtest_jan_aug_2026 import (
     bottom_up_for_month, apply_bias_correction_dynamic, top_down_for_month, blend,
 )
 from hybrid_category_model import bottomup_to_category, combine_hybrid, hybrid_total, category_weights
+from residual_topdown import PULLABLE_ITEMS, residual_topdown_for_category
+
+# 전세·월세 R-ONE 1개월시차 회귀모델(10월 R-ONE 실측 0.34%/0.40% 대입) 예측치.
+RONE_FORECAST = {"전세": 106.836, "월세": 106.503}
 
 warnings.filterwarnings("ignore")
 SCRIPTS = Path(__file__).resolve().parent
@@ -52,6 +62,25 @@ def main():
     td = top_down_for_month(official, item_col, month_cols, TARGET)
     td_total = td.loc[td["분류"] == "총지수", "탑다운예측"].iloc[0]
     td_major = td[td["분류"].str.match(r"^\d\d ")].copy()
+
+    # 탑다운 채택 카테고리 중 전세·월세처럼 R-ONE 실측을 끌어올 수 있는 세부항목은
+    # 바텀업(R-ONE 반영치)으로 돌리고, 나머지("remainder")만의 변동률로 탑다운한다.
+    panel_series = {
+        name: pd.Series(panel.loc[panel["품목명"] == name, month_cols].iloc[0].astype(float).values,
+                        index=month_cols)
+        for cat_items in PULLABLE_ITEMS.values() for name in cat_items
+    }
+    w_cat = category_weights()
+    for cat_label in PULLABLE_ITEMS:
+        res = residual_topdown_for_category(
+            cat_label, official, item_col, month_cols, TARGET, w_cat[cat_label],
+            panel_series, RONE_FORECAST, fs.ets_forecast,
+        )
+        old_val = td_major.loc[td_major["분류"] == cat_label, "탑다운예측"].iloc[0]
+        print(f"[{cat_label}] 카테고리전체탑다운 {old_val:.3f} -> remainder+R-ONE재조합 "
+              f"{res['탑다운예측']:.3f} (remainder예측 {res['remainder예측']:.3f}, "
+              f"remainder가중치 {res['remainder가중치']})")
+        td_major.loc[td_major["분류"] == cat_label, "탑다운예측"] = res["탑다운예측"]
 
     cat_sel = pd.read_csv(SCRIPTS / "category_method_selection.csv", encoding="utf-8-sig")
     hybrid = combine_hybrid(bottomup_to_category(bu, pred_col="pred_corr"), td_major,
